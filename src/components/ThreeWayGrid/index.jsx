@@ -17,14 +17,21 @@ const ThreeWayGrid = ({ largeBox, smallCollection }) => {
         }}
       >
         {smallCollection.map((box) => (
-          <SmallBlock key={box.id} />
+          <div key={box.id}>
+            <SmallBlock key={box.id} />
+          </div>
         ))}
         <LargeBlock position={true} />
       </Grid>
       <>
         <LargeBlock forwardSx={{ display: ["block", "none"] }} />
         {smallCollection.map((box) => (
-          <SmallBlock key={box.id} forwardSx={{ display: ["block", "none"] }} />
+          <div key={box.id}>
+            <SmallBlock
+              key={box.id}
+              forwardSx={{ display: ["block", "none"] }}
+            />
+          </div>
         ))}
       </>
     </>

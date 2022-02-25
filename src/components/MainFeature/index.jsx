@@ -1,11 +1,9 @@
 /** @jsxImportSource theme-ui */
-import { useEffect, useState } from "react";
-import { Box, Flex, Text } from "theme-ui";
-import { Progress } from "../../styled";
+import { Box, Flex } from "theme-ui";
 import Marquee from "../Generic/Marquee";
 
 const MainFeature = () => {
-  const string = "We Love Ecommerce ";
+  // const string = "We Love Ecommerce ";
   return (
     <Flex
       sx={{

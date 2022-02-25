@@ -1,8 +1,11 @@
 {
+  "name": "lumber-site",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "lint": "next lint",
     "start": "next start",
     "setup": "node ./contentful/setup.js $CONTENTFUL_SPACE_ID $CONTENTFUL_MANAGEMENT_TOKEN"
   },
@@ -15,16 +18,21 @@
     "classnames": "2.3.1",
     "date-fns": "2.28.0",
     "graphql": "^16.3.0",
-    "next": "latest",
+    "next": "^12.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "theme-ui": "^0.13.1"
   },
-"engine": {
-  "node": "16.14.0"
-},
+  "engine": {
+    "node": "16.14.0"
+  },
+  "resolutions": {
+    "eslint-plugin-react": "7.28.0"
+  },
   "devDependencies": {
     "autoprefixer": "10.4.2",
-    "contentful-import": "^7.8.7"
+    "contentful-import": "^7.8.7",
+    "eslint": "8.9.0",
+    "eslint-config-next": "12.1.0"
   }
 }
