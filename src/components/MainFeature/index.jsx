@@ -1,22 +1,32 @@
 /** @jsxImportSource theme-ui */
 import { Box, Flex } from "theme-ui";
 import Marquee from "../Generic/Marquee";
+import FeatureContent from "./feature";
 
-const MainFeature = () => {
+const MainFeature = ({ content }) => {
   // const string = "We Love Ecommerce ";
+  const { marqueeText, marqueePosition } = content;
   return (
     <Flex
       sx={{
         background: "white",
-        height: [null, "100vh"],
-        flexDirection: "row", // row-reverse to show marquee on other side
+        flexDirection: marqueePosition === "right" ? "row" : "row-reverse", // row-reverse to show marquee on other side
         color: "black",
-        aspectRatio: ["1", "auto"],
+
+        aspectRatio: ["1", "3/2"],
+        width: "100%",
+        "@supports not (aspect-ratio: 1)": {
+          height: ["0"],
+          pb: ["100%", "80%"],
+        },
       }}
     >
-      <Box sx={{ flexGrow: "1" }}>main</Box>
+      <Box sx={{ width: "100%" }}>
+        <FeatureContent type={content.type} content={content} />
+      </Box>
       {/* only render if marquee is true */}
-      <Marquee text="a string of text lies here" />
+
+      {marqueeText && <Marquee text=" a string of text lies here" />}
     </Flex>
   );
 };

@@ -1,9 +1,25 @@
-/* purgecss start ignore */
-@tailwind base;
-@tailwind components;
-/* purgecss end ignore */
-@tailwind utilities;
-
 body {
   margin: 0;
+}
+
+/* Fonts */
+@font-face {
+  font-family: "Messina Serif Light";
+  src: url("./fonts/messina-serif-light/MessinaSerifTrialWeb-Light.eot");
+  src: url("./fonts/messina-serif-light/MessinaSerifTrialWeb-Light.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "Messina Sans SemiBold";
+  src: url("./fonts/messina-sans-semi-bold/MessinaSansWebTrial-SemiBold.eot");
+  src: url("./fonts/messina-sans-semi-bold/MessinaSansWebTrial-SemiBold.woff")
+    format("woff");
+}
+
+@font-face {
+  font-family: "Messina Sans Regular";
+  src: url("./fonts/messina-sans-regular/MessinaSansWebTrial-Regular.eot");
+  src: url("./fonts/messina-sans-regular/MessinaSansWebTrial-Regular.woff")
+    format("woff");
 }

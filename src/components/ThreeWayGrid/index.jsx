@@ -1,37 +1,54 @@
 /** @jsxImportSource theme-ui */
-import { Grid } from "theme-ui";
+import { Grid, Flex } from "theme-ui";
 
 import SmallBlock from "./small";
 import LargeBlock from "./large";
 
-const ThreeWayGrid = ({ largeBox, smallCollection }) => {
+const ThreeWayGrid = ({ large, smallCollection }) => {
+  console.log(smallCollection);
   return (
     <>
-      <Grid
+      <Flex
         sx={{
-          display: ["none", "grid"],
+          display: ["none", "flex"],
+
           gridAutoRows: "",
           backgroundColor: "black",
+          height: "100%",
+          width: "100%",
           gridGap: "1px",
-          direction: "rtl", // ltr to switch positions
         }}
       >
-        {smallCollection.map((box) => (
-          <div key={box.id}>
-            <SmallBlock key={box.id} />
-          </div>
-        ))}
-        <LargeBlock position={true} />
-      </Grid>
+        <Flex
+          sx={{
+            height: "100%",
+            width: "100%",
+            position: "relative",
+            background: "white",
+            flexDirection: "column",
+            "div:first-child": {
+              borderBottom: "1px solid black",
+            },
+          }}
+        >
+          {smallCollection.map((box) => (
+            <SmallBlock key={box.sys.id} content={box} />
+          ))}
+        </Flex>
+        <LargeBlock content={large} position={true} />
+      </Flex>
+
       <>
-        <LargeBlock forwardSx={{ display: ["block", "none"] }} />
+        <LargeBlock
+          content={large}
+          forwardSx={{ display: ["block", "none"] }}
+        />
         {smallCollection.map((box) => (
-          <div key={box.id}>
-            <SmallBlock
-              key={box.id}
-              forwardSx={{ display: ["block", "none"] }}
-            />
-          </div>
+          <SmallBlock
+            key={box.sys.id}
+            content={box}
+            forwardSx={{ display: ["block", "none"] }}
+          />
         ))}
       </>
     </>

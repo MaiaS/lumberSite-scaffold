@@ -1,11 +1,5 @@
 export default {
-  styles: {
-    root: {
-      px: ["20px", "65px"],
-      pb: "62px",
-    },
-  },
-  breakpoints: ["768px", "1280px", ""],
+  breakpoints: ["768px", "1280px"],
   colors: {
     text: "#000",
     background: "#fff",
@@ -14,12 +8,20 @@ export default {
     white: "#FFF",
   },
   fonts: {
-    body: "system-ui, sans-serif",
-    heading: "system-ui, sans-serif",
+    light: "Messina Serif Light, system-ui, sans-serif",
+    body: "Messina Sans Regular, system-ui, sans-serif",
+    heading: "Messina Sans SemiBold, system-ui, sans-serif",
   },
   fontWeights: {
     body: 400,
     heading: 700,
+  },
+  styles: {
+    root: {
+      px: ["20px", "65px"],
+      pb: "62px",
+      fontFamily: "heading",
+    },
   },
   text: {
     logo: {
@@ -49,9 +51,10 @@ export default {
       letterSpacing: "0.7px",
     },
     marquee: {
-      display: ["none", "unset"],
-      px: [null, "20px", "33px"],
+      display: ["none", "flex"],
       m: 0,
+      mx: "auto",
+      alignItems: "center",
       textAlign: "center",
       writingMode: "vertical-rl",
       textOrientation: "mixed",
@@ -68,5 +71,9 @@ export default {
     mt: 0,
     width: "auto",
     minHeight: "100vh",
+    largeBlock: {
+      px: ["16px", "32px"],
+      py: ["16px", "32px"],
+    },
   },
 };

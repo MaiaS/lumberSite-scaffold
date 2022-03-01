@@ -4,7 +4,6 @@ import { Flex, Text } from "theme-ui";
 import { Progress } from "../../styled";
 
 const Header = () => {
-  console.log("RED");
   const [offset, setOffset] = useState(0);
   useEffect(() => {
     const scrollEvent = () => {
