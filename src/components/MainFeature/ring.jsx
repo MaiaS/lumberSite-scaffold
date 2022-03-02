@@ -38,7 +38,6 @@ const RingFeature = ({ list, title }) => {
         },
         ".brand": {
           fill: "brand",
-          zIndex: 1,
         },
         ".circle": {
           stroke: "brand",
@@ -113,6 +112,7 @@ const RingFeature = ({ list, title }) => {
           {title}
         </Text>
         <svg
+          width="100%"
           className="brand"
           viewBox="0 0 100 100"
           xmlns="http://www.w3.org/2000/svg"

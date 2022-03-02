@@ -1,8 +1,15 @@
 /** @jsxImportSource theme-ui */
-import { Box, Container, Flex, Text } from "theme-ui";
+import { useState } from "react";
+import { Box, Card, Container, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 
-const LargeBlock = ({ forwardSx, position, content }) => {
+const LargeBlock = ({
+  forwardSx,
+  handleActivate,
+  active,
+  position,
+  content,
+}) => {
   const mainImage = content?.mainImage ?? content?.client?.image;
 
   const getRandomColor = (opacity) => {
@@ -14,16 +21,18 @@ const LargeBlock = ({ forwardSx, position, content }) => {
   };
   return (
     <Box
+      onClick={handleActivate}
+      // className={active ? "active" : ""}
       sx={{
         cursor: "pointer",
         aspectRatio: ["1", "auto"],
         backgroundColor: "white",
         position: "relative",
+        zIndex: 2,
         // gridColumn: [null, "2 / span 2 "],
         // gridRow: [null, "1 / span 2"],
         gridColumn: [null, "2 / span 2"],
         gridRow: [null, "1 / span 2"],
-        direction: "ltr",
         filter: "grayscale(100)",
         transition: "1s ease",
         flexShrink: 0.001,
@@ -32,8 +41,6 @@ const LargeBlock = ({ forwardSx, position, content }) => {
         flexGrow: 0,
         ":hover": {
           filter: "grayscale(0)",
-          width: "100%",
-          flexGrow: 10,
         },
         "@supports not (aspect-ratio:1)": {
           height: [0, "auto"],
@@ -49,6 +56,7 @@ const LargeBlock = ({ forwardSx, position, content }) => {
           sx={{
             borderRadius: "24px",
             height: "60%",
+            maxHeight: "500px",
             background: "grey",
             overflow: "hidden",
             filter: "grayscale(0)",
@@ -66,6 +74,12 @@ const LargeBlock = ({ forwardSx, position, content }) => {
         >
           {content.title}
         </Text>
+
+        <Box
+          sx={{ height: 0, transition: "1s ease", opacity: active ? 1 : 0 }}
+          dangerouslySetInnerHTML={{ __html: content.description }}
+        ></Box>
+
         <Flex
           sx={{
             display: ["none", "flex"],

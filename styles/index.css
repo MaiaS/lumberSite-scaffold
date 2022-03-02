@@ -11,14 +11,18 @@ body {
 }
 
 @font-face {
-  font-family: "Messina Sans SemiBold";
+  font-family: "Messina Sans";
+  font-weight: 700;
+  font-style: bold;
   src: url("./fonts/messina-sans-semi-bold/MessinaSansWebTrial-SemiBold.eot");
   src: url("./fonts/messina-sans-semi-bold/MessinaSansWebTrial-SemiBold.woff")
     format("woff");
 }
 
 @font-face {
-  font-family: "Messina Sans Regular";
+  font-family: "Messina Sans";
+  font-weight: 400;
+  font-style: regular;
   src: url("./fonts/messina-sans-regular/MessinaSansWebTrial-Regular.eot");
   src: url("./fonts/messina-sans-regular/MessinaSansWebTrial-Regular.woff")
     format("woff");

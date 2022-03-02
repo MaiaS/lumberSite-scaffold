@@ -9,8 +9,8 @@ export default {
   },
   fonts: {
     light: "Messina Serif Light, system-ui, sans-serif",
-    body: "Messina Sans Regular, system-ui, sans-serif",
-    heading: "Messina Sans SemiBold, system-ui, sans-serif",
+    body: "Messina Sans, system-ui, sans-serif",
+    heading: "Messina Sans, system-ui, sans-serif",
   },
   fontWeights: {
     body: 400,
@@ -24,6 +24,9 @@ export default {
     },
   },
   text: {
+    body: {
+      fontFamily: "body",
+    },
     logo: {
       fontFamily: "heading",
       fontWeight: "bold",

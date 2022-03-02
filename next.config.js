@@ -3,6 +3,10 @@ module.exports = {
     domains: ["images.ctfassets.net"],
     deviceSizes: [320, 640, 660, 768, 1024, 1600],
   },
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
   env: {
     CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
     CONTENTFUL_ENVIRONMENT: process.env.CONTENTFUL_ENVIRONMENT,
