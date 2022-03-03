@@ -1,12 +1,10 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+// import { useRef, useState } from "react";
 import { Box, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 
 const MarqueeFeature = ({ list, title }) => {
-  console.log(list[0].__typename);
-
   return (
     <Box
       sx={{
@@ -24,8 +22,9 @@ const MarqueeFeature = ({ list, title }) => {
         {title}
       </Text>
       <Flex sx={{ flexDirection: "column" }}>
-        {list.map((li) => (
+        {list.map((li, i) => (
           <MarqueeSlider
+            key={`${li}-${i}`}
             text={li.__typename === "Client" ? li.title : li}
             content={li}
           />
@@ -37,10 +36,10 @@ const MarqueeFeature = ({ list, title }) => {
 
 export default MarqueeFeature;
 
-const MarqueeSlider = ({ content }) => {
-  const stringWidth = useRef();
+const MarqueeSlider = ({ content, li }) => {
+  // const stringWidth = useRef();
 
-  const [width, setWidth] = useState("100%");
+  // const [width, setWidth] = useState("100%");
   // useEffect(() => {
   //   const bound = textRef.current?.getBoundingClientRect();
   //   console.log(bound);
@@ -68,20 +67,19 @@ const MarqueeSlider = ({ content }) => {
           svg: {
             transition: ".3s ease",
           },
+          color: "black",
+          transition: ".5s ease",
           gap: "30px",
           ":hover": {
             filter: "grayscale(0)",
-            svg: {
-              fill: "white",
-            },
+            color: "white",
           },
         }}
       >
         {[...Array(4)].map((e, i) => (
-          <Flex sx={{ width: "100%", alignItems: "center" }}>
+          <Flex key={`${e}-${i}`} sx={{ width: "100%", alignItems: "center" }}>
             <Text
               sx={{
-                color: "black",
                 textShadow:
                   "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
               }}

@@ -1,13 +1,13 @@
 /** @jsxImportSource theme-ui */
 import { useRef, useState } from "react";
-import { Box, Flex, Text } from "theme-ui";
+import { Box, Text } from "theme-ui";
 import ReactMarkdown from "react-markdown";
-import { DoubleSide } from 'three'
+import { DoubleSide } from "three";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+// import * as THREE from "three";
 
-const CarouselFeature = ({ title, description, list }) => {
+const CarouselFeature = ({ title, description }) => {
   const [small, setSmall] = useState(false);
 
   return (
@@ -105,7 +105,7 @@ const Cylander = () => {
     side: DoubleSide,
     uniforms: {
       uLength: { value: 0.13 },
-      uProgress: { value: 0 }
+      uProgress: { value: 0 },
     },
     vertexShader: `
       varying vec3 vPos;
@@ -139,16 +139,16 @@ const Cylander = () => {
         vec3 col = vec3(vPos.x);
         gl_FragColor = vec4(col, 1.);
       } 
-    `
-  }
+    `,
+  };
 
   useFrame(() => (myref.current.rotation.y += 0.01));
-  myref.current?.castShadow = true;
-  myref.current?.receiveShadow = true;
-  console.log(myref.current);
+
   return (
     <mesh ref={myref}>
-      <cylinderBufferGeometry args={[1.1, 1.1, 2, 40, 2, true, 0, Math.PI * 5]} />
+      <cylinderBufferGeometry
+        args={[1.1, 1.1, 2, 40, 2, true, 0, Math.PI * 5]}
+      />
       <shaderMaterial args={[shaderArgs]} />
       <meshBasicMaterial attach="material" color="hotpink" />
     </mesh>

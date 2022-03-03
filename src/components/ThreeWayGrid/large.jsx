@@ -1,15 +1,8 @@
 /** @jsxImportSource theme-ui */
-import { useState } from "react";
-import { Box, Card, Container, Flex, Text } from "theme-ui";
+import { Box, Container, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 
-const LargeBlock = ({
-  forwardSx,
-  handleActivate,
-  active,
-  position,
-  content,
-}) => {
+const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
   const mainImage = content?.mainImage ?? content?.client?.image;
 
   const getRandomColor = (opacity) => {
@@ -24,7 +17,8 @@ const LargeBlock = ({
       onClick={handleActivate}
       // className={active ? "active" : ""}
       sx={{
-        cursor: "pointer",
+        cursor: "url('/assets/cursor/GoCursor.svg'), auto",
+        overflow: "hidden",
         aspectRatio: ["1", "auto"],
         backgroundColor: "white",
         position: "relative",
@@ -51,7 +45,6 @@ const LargeBlock = ({
       }}
     >
       <Container variant="container.largeBlock" sx={{ height: "100%" }}>
-        {/* {JSON.stringify(content, null, 2)} */}
         <Box
           sx={{
             borderRadius: "24px",
@@ -88,8 +81,9 @@ const LargeBlock = ({
             bottom: "4%",
           }}
         >
-          {content.tags.map((tag) => (
+          {content.tags.map((tag, i) => (
             <Box
+              key={`${tag + i}`}
               sx={{
                 fontSize: "13px",
                 px: "10px",
