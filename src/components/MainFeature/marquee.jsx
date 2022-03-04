@@ -12,6 +12,7 @@ const MarqueeFeature = ({ list, title }) => {
         width: "100%",
         backgroundColor: "black",
         overflow: "hidden",
+        overflowStyle: "marquee",
         color: "white",
       }}
     >

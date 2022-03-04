@@ -3,6 +3,8 @@ import { useRef, useEffect, useState, memo } from "react";
 import { Box, Flex, Text } from "theme-ui";
 
 const RingFeature = ({ list, title }) => {
+  const ringletRef = useRef(null);
+
   const ringRef = useRef(null);
   const cursorRef = useRef(null);
 
@@ -83,6 +85,16 @@ const RingFeature = ({ list, title }) => {
         ".circle": {
           stroke: "brand",
         },
+        ".enter": {
+          transform: "scale(0)",
+        },
+        ".start": {
+          transform: "scale(1)",
+          animationName: "rotation",
+          // svg: {
+          //
+          // },
+        },
       }}
     >
       <img
@@ -90,12 +102,12 @@ const RingFeature = ({ list, title }) => {
         className="mover"
         src="/assets/cursor/HoverCursor.svg"
       />
-      <RingSet list={list} title={title} />
+      <RingSet list={list} title={title} mouseIn={mouseIn} />
     </Box>
   );
 };
 
-const RingSet = memo(function ({ list, title }) {
+const RingSet = memo(function ({ list, title, mouseIn }) {
   return (
     <Flex
       sx={{
@@ -109,9 +121,24 @@ const RingSet = memo(function ({ list, title }) {
       }}
     >
       {list.slice().map((li, i) => {
-        return <Ringlet key={`${li + i}`} li={li} i={i} list={list} />;
+        return (
+          <Ringlet
+            key={`${li + i}`}
+            li={li}
+            i={i}
+            list={list}
+            animationClass={""}
+          />
+        );
       })}
-      <Box sx={{ zIndex: 100, aspectRatio: "1", width: "100%" }}>
+
+      <Box
+        sx={{
+          zIndex: 100,
+          aspectRatio: "1",
+          width: "100%",
+        }}
+      >
         <Text
           sx={{
             position: "absolute",
@@ -141,7 +168,7 @@ const RingSet = memo(function ({ list, title }) {
   );
 });
 
-const Ringlet = ({ li, i, list }) => {
+const Ringlet = ({ li, i, list, forwardRef, animationClass }) => {
   // console.log("rerender ringlet " + i);
   const getCircumference = (radius) => {
     return 2 * Math.PI * radius;
@@ -167,7 +194,6 @@ const Ringlet = ({ li, i, list }) => {
     const newString = string.padStart(string.length + 1, " ").repeat(newChars);
 
     if (i === 0) {
-      console.log("scale", scale);
       console.log("fontSize", fontSize);
       console.log("circumference", circumference);
       console.log("minchars", maxChars);
@@ -189,6 +215,7 @@ const Ringlet = ({ li, i, list }) => {
 
   return (
     <Box
+      className=""
       sx={{
         "@keyframes rotation": {
           "0%": {
@@ -198,10 +225,12 @@ const Ringlet = ({ li, i, list }) => {
             transform: "rotate(0deg)",
           },
         },
+
         aspectRatio: "1",
         width: "100%",
         position: "absolute",
-        animation: `${Math.max(20, 20 * i * 0.5)}s infinite rotation`,
+        transition: "1s ease",
+        animation: `${Math.max(20, 20 * i * 0.5)}s infinite`,
         animationDelay: `${i * 1}s`,
         animationTimingFunction: "linear",
         zIndex: list.length - i,
@@ -215,12 +244,33 @@ const Ringlet = ({ li, i, list }) => {
         },
       }}
     >
+      {/* <Box
+        sx={{
+          aspectRatio: "1",
+          height: `${120 * i * 0.5 + 10}%`,
+          width: `${120 * i * 0.5 + 10}%`,
+          top: `${50}%`,
+          left: `${50}%`,
+          borderRadius: "50%",
+          transform: "translate(-50%,-50%)",
+          position: "absolute",
+          border: i % 2 === 0 ? "1px solid" : "1px dotted",
+          strokeDashoffset: "20px",
+          borderColor: "brand",
+        }}
+      ></Box> */}
       <svg
         key={`${li}-${i}`}
         style={{
           pointerEvents: "none",
           position: "absolute",
-          transform: `scale(${scale}) rotate(${rotationStart}deg)`,
+          height: `${120 * i}%`,
+          width: `${120 * i}%`,
+          top: `${50}%`,
+          left: `${50}%`,
+          transform: "translate(-50%,-50%)",
+
+          //  transform: `scale(${scale}) rotate(${rotationStart}deg)`,
           // transformStyle: "preserve-3d",
         }}
         preserveAspectRatio="none"
@@ -231,10 +281,17 @@ const Ringlet = ({ li, i, list }) => {
         <path
           id="circle"
           d="
-    M 25, 50
-    a 25,25 0 1,1 50,0
-    a 25,25 0 1,1 -50,0
-    "
+          M 25, 50
+          a 1,1 0 1,1 50,0
+          a 1,1 0 1,1 -50,0
+          "
+
+          // d="
+          // M cx cy
+          // m -r, 0
+          // a r,r 0 1,0 (r * 2),0
+          // a r,r 0 1,0 -(r * 2),0
+          // "
         />
         <circle
           onMouseEnter={() => {
@@ -244,13 +301,14 @@ const Ringlet = ({ li, i, list }) => {
             hoverRef.current.style.fill = "white";
           }}
           className="circle"
-          fill="transparent"
-          strokeWidth={`${scale * 0.01}`}
+          fill="black"
+          strokeWidth={`.1px`}
           strokeDasharray={i % 2 === 0 ? "0" : ".3"}
           cx="50"
           cy="50"
-          r="30"
+          r={`${25 * Math.pow(1.5, Math.pow(0.5, 0.3 * i))}`}
         />
+
         <text
           ref={hoverRef}
           fill="white"
