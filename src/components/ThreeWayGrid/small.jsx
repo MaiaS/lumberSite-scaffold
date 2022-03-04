@@ -90,6 +90,7 @@ const SmallBlock = ({ forwardSx, classType, content = {} }) => {
           />
           {[...Array(12)].map((e, i) => (
             <Box
+              key={`${e}-${i}`}
               sx={{
                 position: "absolute",
                 width: "100%",

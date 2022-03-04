@@ -3,8 +3,6 @@ import { useRef, useEffect, useState, memo } from "react";
 import { Box, Flex, Text } from "theme-ui";
 
 const RingFeature = ({ list, title }) => {
-  const ringletRef = useRef(null);
-
   const ringRef = useRef(null);
   const cursorRef = useRef(null);
 
@@ -107,9 +105,10 @@ const RingFeature = ({ list, title }) => {
   );
 };
 
-const RingSet = memo(function ({ list, title, mouseIn }) {
+const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
   return (
     <Flex
+      className={mouseIn ? "start" : "enter"}
       sx={{
         width: "30%",
         top: "50%",
@@ -168,7 +167,7 @@ const RingSet = memo(function ({ list, title, mouseIn }) {
   );
 });
 
-const Ringlet = ({ li, i, list, forwardRef, animationClass }) => {
+const Ringlet = ({ li, i, list }) => {
   // console.log("rerender ringlet " + i);
   const getCircumference = (radius) => {
     return 2 * Math.PI * radius;
@@ -193,14 +192,6 @@ const Ringlet = ({ li, i, list, forwardRef, animationClass }) => {
     const newChars = Math.max(1, maxChars / (string.length + 1));
     const newString = string.padStart(string.length + 1, " ").repeat(newChars);
 
-    if (i === 0) {
-      console.log("fontSize", fontSize);
-      console.log("circumference", circumference);
-      console.log("minchars", maxChars);
-      console.log("newChars", newChars);
-      console.log("newString", newString);
-    }
-
     return `<textPath
    
     xlink:href="#circle"
@@ -210,8 +201,8 @@ const Ringlet = ({ li, i, list, forwardRef, animationClass }) => {
   };
 
   const hoverRef = useRef();
-  const rotationStart = Math.floor(Math.random() * 360);
-  const scale = 2.25 + Math.pow(i, 1.2 + i * 0.025);
+  // const rotationStart = Math.floor(Math.random() * 360);
+  // const scale = 2.25 + Math.pow(i, 1.2 + i * 0.025);
 
   return (
     <Box
