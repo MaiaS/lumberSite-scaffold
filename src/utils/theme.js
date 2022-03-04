@@ -61,7 +61,7 @@ export default {
       textAlign: "center",
       writingMode: "vertical-rl",
       textOrientation: "mixed",
-      fontSize: [null, "30px", "70px"],
+      fontSize: [null, "70px", "100px"],
       fontFamily: "heading",
     },
   },

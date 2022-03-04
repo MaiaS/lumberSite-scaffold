@@ -26,7 +26,7 @@ const MainFeature = ({ content }) => {
       </Box>
       {/* only render if marquee is true */}
 
-      {marqueeText && <Marquee text=" a string of text lies here" />}
+      {marqueeText && <Marquee text={marqueeText} />}
     </Flex>
   );
 };
