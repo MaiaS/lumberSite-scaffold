@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from "theme-ui";
-import SmallBlock from "./small";
+import SmallBlock from "./smallBlock/index";
 import LargeBlock from "./large";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
             pb: "100%",
           },
           display: ["none", "flex"],
-          flexDirection: position && "row",
+          flexDirection: !position && "row-reverse",
           gridAutoRows: "",
           backgroundColor: "black",
           height: "100%",
