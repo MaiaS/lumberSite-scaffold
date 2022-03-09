@@ -28,28 +28,14 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
             height: "100%",
             width: "100%",
             position: "relative",
-            background: "white",
+            background: "black",
             flexDirection: "column",
-            div: {
-              borderBottom: "1px solid black",
-            },
-            "div:last-child": {
-              borderBottom: "none",
-            },
+            gap: "1px",
           }}
         >
           {smallCollection.map((box) => (
-            <SmallBlock key={box.sys.id} content={box} />
+            <SmallBlock className="smallBlock" key={box.sys.id} content={box} />
           ))}
-
-          <SmallBlock
-            classType={active ? "active" : ""}
-            forwardSx={{
-              height: 0,
-              pb: 0,
-              transition: "1s ease",
-            }}
-          />
         </Flex>
         <LargeBlock
           active={active}
