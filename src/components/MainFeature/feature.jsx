@@ -18,10 +18,11 @@ const FeatureContent = ({ type, content }) => {
 
     case "rings":
       return (
-        <RingFeature
-          list={content.stringList || content.clientsCollection.items}
-          title={content.title}
-        />
+        <div></div>
+        // <RingFeature
+        //   list={content.stringList || content.clientsCollection.items}
+        //   title={content.title}
+        // />
       );
 
     case "manyMarquee":
