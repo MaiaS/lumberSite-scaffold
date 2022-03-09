@@ -13,7 +13,7 @@ const MainFeature = ({ content }) => {
         flexDirection: marqueePosition === "right" ? "row" : "row-reverse", // row-reverse to show marquee on other side
         color: "black",
 
-        aspectRatio: ["1", "3/2"],
+        aspectRatio: ["1", "3:2"],
         width: "100%",
         "@supports not (aspect-ratio: 1)": {
           height: ["0"],
@@ -26,7 +26,7 @@ const MainFeature = ({ content }) => {
       </Box>
       {/* only render if marquee is true */}
 
-      {marqueeText && <Marquee text=" a string of text lies here" />}
+      {/* {marqueeText && <Marquee text=" a string of text lies here" />} */}
     </Flex>
   );
 };

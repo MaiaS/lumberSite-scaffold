@@ -70,9 +70,13 @@ const RingFeature = ({ list, title }) => {
       sx={{
         cursor: "none",
         position: "relative",
+
+        // top: "50%",
+        // left: "50%",
+        // transform: "translate(-50%, -50%)",
         background: "black",
         height: "100%",
-        paddingBottom: "100%",
+        width: "100%",
         overflow: "hidden",
         ".textpath": {
           fontSize: "3px",
@@ -100,7 +104,16 @@ const RingFeature = ({ list, title }) => {
         className="mover"
         src="/assets/cursor/HoverCursor.svg"
       />
-      <RingSet list={list} title={title} mouseIn={mouseIn} />
+      <Flex
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <RingSet list={list} title={title} mouseIn={mouseIn} />
+      </Flex>
     </Box>
   );
 };
@@ -110,12 +123,13 @@ const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
     <Flex
       className={mouseIn ? "start" : "enter"}
       sx={{
-        width: "30%",
-        top: "50%",
-        left: "50%",
+        width: "25%",
+
         position: "absolute",
-        transform: "translate(-50%, -50%)",
-        flexDirection: "justify-center",
+        transition: "1s ease",
+        // transform: "translate(-50%, -50%)",
+        justifyContent: "center",
+        alignItems: "center",
         isolation: "isolate",
       }}
     >
@@ -206,7 +220,6 @@ const Ringlet = ({ li, i, list }) => {
 
   return (
     <Box
-      className=""
       sx={{
         "@keyframes rotation": {
           "0%": {
@@ -221,7 +234,7 @@ const Ringlet = ({ li, i, list }) => {
         width: "100%",
         position: "absolute",
         transition: "1s ease",
-        animation: `${Math.max(20, 20 * i * 0.5)}s infinite`,
+        animation: `rotation ${Math.max(20, 20 * i * 0.5)}s infinite`,
         animationDelay: `${i * 1}s`,
         animationTimingFunction: "linear",
         zIndex: list.length - i,

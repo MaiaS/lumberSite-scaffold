@@ -25,12 +25,11 @@ const FeatureContent = ({ type, content }) => {
       );
 
     case "manyMarquee":
-      return (
-        <MarqueeFeature
-          list={content.stringList || content.clientsCollection.items}
-          title={content.title}
-        />
-      );
+      return null;
+      // <MarqueeFeature
+      //   list={content.stringList || content.clientsCollection.items}
+      //   title={content.title}
+      // />
 
     // return <pre>{JSON.stringify(content, null, 2)}</pre>;
 
