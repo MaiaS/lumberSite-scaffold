@@ -42,6 +42,7 @@ const Marquee = ({ text }) => {
             width: "100%",
             top: 0,
             animation: "slideDown 20s linear infinite",
+            animationDelay: "-10s",
             animationFillMode: "forwards",
           },
         }}
@@ -51,7 +52,7 @@ const Marquee = ({ text }) => {
           text={text}
           containerRef={containerRef}
           forwardSx={{
-            animationDelay: "10s !important",
+            animationDelay: "0s !important",
             opacity: 0,
             // transform: "translateX(100%%)",
           }}

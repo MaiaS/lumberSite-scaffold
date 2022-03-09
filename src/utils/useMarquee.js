@@ -10,20 +10,23 @@ const useMarquee = ({ containerRef, initialElemRef, type }) => {
     const containerBound = container.getBoundingClientRect();
     const elemBound = elem.getBoundingClientRect();
     if (!elemBound.width || !containerBound.width) return 1;
-    const duplicateNum = Math.ceil(containerBound.width / elemBound.width);
-
+    const duplicateNum = Math.ceil(
+      Math.ceil(containerBound.width / 2) / elemBound.width
+    );
+    console.log(duplicateNum);
     return duplicateNum;
   };
 
   const calculateHeight = (container, elem) => {
-    console.log(container, elem);
     if (!container || !elem) return 5;
 
     const containerBound = container.getBoundingClientRect();
     const elemBound = elem.getBoundingClientRect();
-    console.log(containerBound);
     if (!elemBound.height || !containerBound.height) return 1;
-    const duplicateNum = Math.ceil(containerBound.height / elemBound.height);
+    const duplicateNum = Math.ceil(
+      Math.ceil(containerBound.width / 2) / elemBound.height
+    );
+    console.log(duplicateNum);
 
     return duplicateNum;
   };

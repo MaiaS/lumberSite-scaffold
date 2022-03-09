@@ -13,6 +13,7 @@ const MarqueeFeature = ({ list, title }) => {
     <Box
       ref={containerRef}
       sx={{
+        "--li-height": `${Math.round(80 / list.length)}%`,
         height: "100%",
         width: "100%",
         backgroundColor: "black",
@@ -52,10 +53,11 @@ const MarqueeSlider = ({ content, li, alternate, containerRef }) => {
           cursor: "url('/assets/cursor/GoCursor.svg'), pointer",
           py: ["30px", "50px"],
           borderTop: "1px solid white",
-          height: ["30px", "70px"],
+          height: "var(--li-height)",
+          // height: ["30px", "70px", "200px"],
           alignItems: "center",
-          width: "100%",
-          fontSize: ["30px", "70px"],
+          minWidth: "100%",
+          // fontSize: "1000%",
 
           webkitTextFillColor: "none",
           filter: "grayscale(100)",
@@ -84,6 +86,7 @@ const MarqueeSlider = ({ content, li, alternate, containerRef }) => {
           ".marquee": {
             position: "absolute",
             animation: "slideOut 20s linear infinite",
+            animationDelay: "-10s",
             animationFillMode: "forwards",
             animationDirection: alternate && "reverse",
             // left: !alternate && "-200%",
@@ -97,7 +100,7 @@ const MarqueeSlider = ({ content, li, alternate, containerRef }) => {
           li={li}
           containerRef={containerRef}
           forwardSx={{
-            animationDelay: "10s !important",
+            animationDelay: "0s !important",
             opacity: 0,
           }}
         />
@@ -109,7 +112,7 @@ const MarqueeSlider = ({ content, li, alternate, containerRef }) => {
 const MarqueeContent = ({ content, li, containerRef, forwardSx }) => {
   const initialElemRef = useRef();
 
-  const number = useMarquee({ containerRef, initialElemRef, type: "" });
+  const number = useMarquee({ containerRef, initialElemRef, type: "width" });
 
   return (
     <Flex className="marquee" sx={{ ...forwardSx }}>
@@ -134,10 +137,10 @@ const MarqueeContent = ({ content, li, containerRef, forwardSx }) => {
           {content.__typename === "Client" && (
             <Box
               sx={{
-                mx: ["10px", "30px"],
-                // minWidth: ["40px", "140px"],
-
-                width: "clamp(30px, 7vw, 100px)",
+                mx: "20px",
+                aspectRatio: "2:3",
+                width: "6vw",
+                position: "relative",
                 borderRadius: ["12px", "24px"],
                 overflow: "hidden",
               }}
