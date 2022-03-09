@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { useRef, useState } from "react";
 import { Box, Flex, Text } from "theme-ui";
 import useMarquee from "~/utils/useMarquee";
@@ -13,7 +13,6 @@ const MarqueeFeature = ({ list, title }) => {
     <Box
       ref={containerRef}
       sx={{
-        "--li-height": `${Math.round(80 / list.length)}%`,
         height: "100%",
         width: "100%",
         backgroundColor: "black",
@@ -24,13 +23,20 @@ const MarqueeFeature = ({ list, title }) => {
     >
       <Text
         as="h3"
-        sx={{ pt: "39px", pl: "30px", m: 0, mb: ["30px", "100px"] }}
+        sx={{
+          pt: "39px",
+          pl: "30px",
+          pb: "clamp(20px, 5vw, 100px)",
+          height: "20%",
+          m: 0,
+        }}
       >
         {title}
       </Text>
-      <Flex sx={{ flexDirection: "column", height: "100%" }}>
+      <Flex sx={{ flexDirection: "column", height: "80%" }}>
         {list.map((li, i) => (
           <MarqueeSlider
+            listLength={list.length}
             containerRef={containerRef}
             alternate={i % 2 === 0 && true}
             key={`${li}-${i}`}
@@ -45,19 +51,42 @@ const MarqueeFeature = ({ list, title }) => {
 
 export default MarqueeFeature;
 
-const MarqueeSlider = ({ content, li, alternate, containerRef }) => {
+const MarqueeSlider = ({
+  content,
+  li,
+  alternate,
+  containerRef,
+  listLength,
+}) => {
+  const marqueeSliderRef = useRef();
+
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (!marqueeSliderRef.current) return;
+
+    const resizeMarqueeText = () => {
+      const rect = marqueeSliderRef.current.getBoundingClientRect();
+      setHeight(rect.height);
+    };
+    window.addEventListener("resize", resizeMarqueeText);
+    resizeMarqueeText();
+    return () => window.removeEventListener("resize", resizeMarqueeText);
+  }, [marqueeSliderRef]);
+
   return (
     <Link href={content.url}>
       <Flex
+        ref={marqueeSliderRef}
         sx={{
           cursor: "url('/assets/cursor/GoCursor.svg'), pointer",
-          py: ["30px", "50px"],
+          py: [`${100 / listLength}px`, `${100 / listLength}px`],
           borderTop: "1px solid white",
-          height: "var(--li-height)",
+          height: [`${90 / listLength}%`, `${90 / listLength}%`],
           // height: ["30px", "70px", "200px"],
           alignItems: "center",
           minWidth: "100%",
-          // fontSize: "1000%",
+          fontSize: [`${height * 0.4}px`, `${height * 0.8}px`],
 
           webkitTextFillColor: "none",
           filter: "grayscale(100)",
@@ -138,8 +167,9 @@ const MarqueeContent = ({ content, li, containerRef, forwardSx }) => {
             <Box
               sx={{
                 mx: "20px",
-                aspectRatio: "2:3",
-                width: "6vw",
+                aspectRatio: "3/2",
+                height: "100%",
+                width: ["clamp(10px,6vw,500px)", "clamp(10px,14vw,400px)"],
                 position: "relative",
                 borderRadius: ["12px", "24px"],
                 overflow: "hidden",

@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 
 const useMarquee = ({ containerRef, initialElemRef, type }) => {
   console.log(type, containerRef, initialElemRef);
