@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Box, Text, Flex } from "theme-ui";
 import useMarquee from "~/utils/useMarquee";
 
@@ -7,7 +7,6 @@ import useMarquee from "~/utils/useMarquee";
 const Marquee = ({ text }) => {
   const containerRef = useRef();
 
-  console.log("mf", containerRef.current);
   return (
     <Box
       ref={containerRef}

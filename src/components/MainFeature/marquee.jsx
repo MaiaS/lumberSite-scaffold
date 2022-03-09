@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef } from "react";
 // import { useRef, useState } from "react";
 import { Box, Flex, Text } from "theme-ui";
 import useMarquee from "~/utils/useMarquee";
