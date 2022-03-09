@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { useEffect, useRef } from "react";
-import { Box, Flex, Text } from "theme-ui";
+import { Box, Flex } from "theme-ui";
 
 // need to change eyelid,
 // need to make blink
@@ -16,15 +16,15 @@ const EyeLid = () => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M39.4689 0.671875C22.6405 0.671875 8.01242 5.2046 0.561279 11.8717C8.01242 18.5388 22.6405 23.0715 39.4689 23.0715C56.2975 23.0715 70.9256 18.5388 78.3765 11.8717C70.9256 5.2046 56.2975 0.671875 39.4689 0.671875Z"
       />
     </svg>
   );
 };
 
-const Eyes = ({ content }) => {
+const Eyes = () => {
   return (
     <>
       <Flex
@@ -51,7 +51,7 @@ const EyeBall = () => {
   useEffect(() => {
     const followMe = (e) => {
       if (!eyeWhiteRef.current || !pupilRef.current) return;
-      const pupil = pupilRef.current.getBoundingClientRect();
+
       const eye = eyeWhiteRef.current.getBoundingClientRect();
       const center = {
         x: e.x,

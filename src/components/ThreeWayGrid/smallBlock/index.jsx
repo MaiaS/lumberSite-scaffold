@@ -1,13 +1,12 @@
 /** @jsxImportSource theme-ui */
-import { useEffect, useState } from "react";
-import { Box, Grid, Text } from "theme-ui";
+import { Box } from "theme-ui";
 import CircleGrid from "./circleGrid";
 import Clock from "./clock";
 import Eyes from "./eyes";
 
 const SmallBlock = ({ forwardSx, classType, content = {} }) => {
   const { type } = content;
-  console.log(content.mainColor, type);
+
   return (
     <Box
       className={classType}

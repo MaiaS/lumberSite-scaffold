@@ -95,7 +95,7 @@ const RingFeature = ({ list, title }) => {
   );
 };
 
-const RingSet = memo(function ({ list, title }) {
+const RingSet = memo(function RingSet({ list, title }) {
   return (
     <Flex
       sx={{
@@ -142,7 +142,6 @@ const RingSet = memo(function ({ list, title }) {
 });
 
 const Ringlet = ({ li, i, list }) => {
-  // console.log("rerender ringlet " + i);
   const getCircumference = (radius) => {
     return 2 * Math.PI * radius;
   };
@@ -165,15 +164,6 @@ const Ringlet = ({ li, i, list }) => {
     const maxChars = getChar(circumference, fontSize);
     const newChars = Math.max(1, maxChars / (string.length + 1));
     const newString = string.padStart(string.length + 1, " ").repeat(newChars);
-
-    if (i === 0) {
-      console.log("scale", scale);
-      console.log("fontSize", fontSize);
-      console.log("circumference", circumference);
-      console.log("minchars", maxChars);
-      console.log("newChars", newChars);
-      console.log("newString", newString);
-    }
 
     return `<textPath
    

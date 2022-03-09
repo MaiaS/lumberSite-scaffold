@@ -5,7 +5,7 @@ const CircleGrid = ({ type }) => {
   const [gridArray, setGridArray] = useState(
     Array(5)
       .fill(0)
-      .map((x) => Array(5).fill(false))
+      .map(() => Array(5).fill(false))
   );
 
   const flipHelper = (i, j, bool, skipSet) => {
@@ -105,6 +105,7 @@ const CircleGrid = ({ type }) => {
       gridArray.map((grid, i) =>
         grid.map((flip, j) => (
           <Circle
+            key={j}
             flip={flip}
             i={i}
             j={j}
