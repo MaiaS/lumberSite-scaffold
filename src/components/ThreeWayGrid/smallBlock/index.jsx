@@ -4,7 +4,14 @@ import CircleGrid from "./circleGrid";
 import Clock from "./clock";
 import Eyes from "./eyes";
 
-const SmallBlock = ({ forwardSx, classType, content = {} }) => {
+import { memo } from "react";
+import TextImage from "./TextImage";
+
+const SmallBlock = memo(function SmallBlock({
+  forwardSx,
+  classType,
+  content = {},
+}) {
   const { type } = content;
 
   return (
@@ -22,34 +29,20 @@ const SmallBlock = ({ forwardSx, classType, content = {} }) => {
       }}
     >
       {type === "clock" && <Clock content={content} />}
-      {type === "text_image" && <div></div>}
+
+      {type === "text_image" && <TextImage content={content} />}
+
       {type === "eyes" && <Eyes />}
 
-      {type === "circle_grid_bfs" && (
-        <>
-          <CircleGrid type="bfs" />
-        </>
-      )}
+      {type === "circle_grid_bfs" && <CircleGrid type="bfs" />}
 
-      {type === "circle_grid_rain" && (
-        <>
-          <CircleGrid type="rain" />
-        </>
-      )}
+      {type === "circle_grid_rain" && <CircleGrid type="rain" />}
 
-      {type === "circle_grid_paint" && (
-        <>
-          <CircleGrid type="paint" />
-        </>
-      )}
+      {type === "circle_grid_paint" && <CircleGrid type="paint" />}
 
-      {type === "circle_grid_grow" && (
-        <>
-          <CircleGrid type="grow" />
-        </>
-      )}
+      {type === "circle_grid_grow" && <CircleGrid type="grow" />}
     </Box>
   );
-};
+});
 
-export default SmallBlock;
+export default memo(SmallBlock);

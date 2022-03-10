@@ -1,11 +1,8 @@
 /** @jsxImportSource theme-ui */
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { Box, Flex } from "theme-ui";
 
-// need to change eyelid,
-// need to make blink
-// need to follow scroll
-
+// eyelid
 const EyeLid = () => {
   return (
     <svg
@@ -24,39 +21,120 @@ const EyeLid = () => {
   );
 };
 
-const Eyes = () => {
+const Eyes = memo(function Eyes() {
+  // Eyelid rotation start
+  const rotate = 0; //  const rotate = Math.floor(Math.random() * 61 - 30);
+
+  // eyelid forwardRef
+  const eyeRRef = useRef();
+  const eyeLRef = useRef();
+
+  useEffect(() => {
+    // animate eyelid blink
+    if (!eyeRRef.current || !eyeLRef.current) return;
+    const eyeR = eyeRRef.current;
+    const eyeL = eyeLRef.current;
+    const rightAnim = eyeR.animate(
+      [
+        { transform: `scaleY(1) rotate(-${rotate}deg)` },
+        { transform: `scaleY(0) rotate(-${rotate}deg)` },
+        { transform: `scaleY(1) rotate(-${rotate}deg)` },
+      ],
+      {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+    const leftAnim = eyeL.animate(
+      [
+        { transform: `scaleY(1) rotate(${rotate}deg)` },
+        { transform: `scaleY(0) rotate(${rotate}deg)` },
+        { transform: `scaleY(1) rotate(${rotate}deg)` },
+      ],
+      {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+    leftAnim.pause();
+    rightAnim.pause();
+
+    // randomize eyelid blink and recursion that never ends
+    function blink() {
+      let blinkTime = null;
+      // clean up closure
+      function start() {
+        blinkTime = setTimeout(() => {
+          rightAnim.play();
+          leftAnim.play();
+          start();
+        }, Math.random() * 15000);
+      }
+      function clear() {
+        clearTimeout(blinkTime);
+      }
+
+      return {
+        start,
+        clear,
+      };
+    }
+    const blinkFunction = blink();
+    blinkFunction.start();
+
+    // clear blink
+    return () => blinkFunction.clear();
+  }, [eyeRRef, eyeLRef]);
+
   return (
     <>
       <Flex
         sx={{
+          "--rotate-eye": `${rotate}deg`,
           height: "100%",
           width: "100%",
           justifyContent: "center",
           alignItems: "center",
+          ".blink-left": {
+            transform: "scaleY(1) rotate(calc(-1 * var(--rotate-eye)))",
+          },
+          ".blink-right": {
+            transform: "rotate(var(--rotate-eye))",
+          },
         }}
       >
-        <EyeBall />
-        <EyeBall />
+        <EyeBall forwardRef={eyeLRef} />
+        <EyeBall right forwardRef={eyeRRef} />
       </Flex>
     </>
   );
-};
+});
 
-const EyeBall = () => {
+const EyeBall = ({ right, forwardRef }) => {
   const eyeWhiteRef = useRef();
   const pupilRef = useRef();
   const maskRef = useRef();
 
-  //rotating eyeball
+  // Rotating eyeball
   useEffect(() => {
     const followMe = (e) => {
       if (!eyeWhiteRef.current || !pupilRef.current) return;
 
-      const eye = eyeWhiteRef.current.getBoundingClientRect();
       const center = {
-        x: e.x,
-        y: e.y,
+        x: 0,
+        y: 0,
       };
+
+      // window (scroll) vs mouse (mousemove)
+      if (!e.x || !e.y) {
+        center.x = window.innerWidth / 2;
+        center.y = window.innerHeight / 2;
+      } else {
+        center.x = e.x;
+        center.y = e.y;
+      }
+      const eye = eyeWhiteRef.current.getBoundingClientRect();
+
       const elemCenter = {
         x: eye.left + eye.width / 2,
         y: eye.top + eye.height / 2,
@@ -69,8 +147,19 @@ const EyeBall = () => {
       eyeWhiteRef.current.style.transform = `rotate(-${degree}deg)`;
       maskRef.current.style.transform = `rotate(${degree}deg)`;
     };
-    window.addEventListener("mousemove", followMe);
-    return () => window.removeEventListener("mousemove", followMe);
+
+    const query = window.matchMedia("(any-hover: none)").matches;
+
+    // if mobile -> scroll, else mousemove
+    if (query) {
+      window.addEventListener("scroll", followMe);
+    } else {
+      window.addEventListener("mousemove", followMe);
+    }
+    return () =>
+      query
+        ? window.addEventListener("scroll", followMe)
+        : window.removeEventListener("mousemove", followMe);
   }, []);
 
   return (
@@ -85,19 +174,6 @@ const EyeBall = () => {
         position: "relative",
       }}
     >
-      {/* <Box
-        ref={maskRef}
-        sx={{
-          height: "50%",
-          width: "100%",
-          top: "25%",
-          position: "relative",
-          borderRadius: "50%",
-
-          // clipPath: "ellipse(50% 20% at 50%)",
-          backgroundColor: "white",
-        }}
-      ></Box> */}
       <Box
         ref={maskRef}
         sx={{
@@ -108,7 +184,20 @@ const EyeBall = () => {
           position: "absolute",
         }}
       >
-        <EyeLid />
+        <Box
+          ref={forwardRef}
+          className={right ? "blink-right" : "blink-left"}
+          sx={{
+            height: "100%",
+            width: "100%",
+            top: "0%",
+            left: "0%",
+
+            position: "absolute",
+          }}
+        >
+          <EyeLid />
+        </Box>
       </Box>
       <Box
         ref={pupilRef}
@@ -128,4 +217,4 @@ const EyeBall = () => {
   );
 };
 
-export default Eyes;
+export default memo(Eyes);
