@@ -1,7 +1,21 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Grid } from "theme-ui";
 
 const CircleGrid = ({ type }) => {
+  const [mousePos] = useState({ x: 0, y: 0 });
+
+  // send mouse position down
+  // useEffect(() => {
+  //   if (type !== "grow") return;
+
+  //   const relayMousePos = (e) => {
+  //     setMousePos({ x: e.clientX, y: e.clientY });
+  //   };
+
+  //   window.addEventListener("mousemove", relayMousePos);
+  //   return () => window.removeEventListener("mousemove", relayMousePos);
+  // }, []);
+
   const [gridArray, setGridArray] = useState(
     Array(5)
       .fill(0)
@@ -68,6 +82,8 @@ const CircleGrid = ({ type }) => {
       flipHelper(i, j + 1, bool, true);
       flipHelper(i + 1, j + 1, bool, true);
       flipHelper(i - 1, j - 1, bool, true);
+      flipHelper(i + 1, j - 1, bool, true);
+      flipHelper(i - 1, j + 1, bool, true);
       setGridArray([...gridArray]);
     });
   };
@@ -113,6 +129,7 @@ const CircleGrid = ({ type }) => {
             handleFlipLeave={
               type === "paint" || type === "rain" ? null : handleFlipper
             }
+            mousePos={mousePos}
             grow={type === "grow"}
             paint={type === "paint"}
           />
@@ -144,7 +161,36 @@ const Circle = ({
   handleFlipLeave,
   grow,
   paint,
+  mousePos,
 }) => {
+  const circleRef = useRef();
+
+  const [scale] = useState(0.8);
+
+  // Grow eligible circles based on mouse position more dynamic
+  // useEffect(() => {
+  //   if (!circleRef.current || flip) return;
+  //   const rect = circleRef.current.getBoundingClientRect();
+  //   if (!rect.height || !rect.width || !rect.x || !rect.y) return;
+  //   const ex = (rect.x + rect.width) / 2;
+  //   const ey = (rect.y + rect.height) / 2;
+  //   const dx = ex - mousePos.x;
+  //   const dy = ey - mousePos.y;
+  //   const d = Math.hypot(dx, dy);
+  //   console.log(
+  //     d,
+  //     "\n mouse",
+  //     mousePos.x,
+  //     mousePos.y,
+  //     "\n circle:",
+  //     rect.left,
+  //     ey,
+  //     grow
+  //   );
+  // }, [mousePos]);
+
+  // fix with springs.
+
   const handleFlip = () => {
     handleFlipEnter(i, j, paint ? !flip : true);
   };
@@ -154,6 +200,7 @@ const Circle = ({
 
   return (
     <Box
+      ref={circleRef}
       onMouseEnter={handleFlip}
       onMouseLeave={handleLeave}
       onTouchStart={handleFlip}
@@ -165,9 +212,15 @@ const Circle = ({
         overflow: "hidden",
         position: "relative",
         transformStyle: "preserve-3d",
+        ":hover": {
+          ".back, .front": {
+            transform: grow && `scale(.3)`,
+          },
+        },
       }}
     >
       <Box
+        className="back"
         sx={{
           position: "absolute",
           top: 0,
@@ -179,11 +232,11 @@ const Circle = ({
               ? "rotate(-80deg)"
               : "rotateY(180deg)"
             : flip
-            ? "scale(.8)"
+            ? `scale(${scale})`
             : "scale(1)",
           backgroundColor: "brand",
           borderRadius: "50%",
-          transition: ".5s ease",
+          transition: grow ? ".5s cubic-bezier(.17,.67,0,1.06)" : ".5s ease",
           // transitionDelay: `${i + j}s`,
           backfaceVisibility: "hidden",
           transformStyle: "preserve-3d",
@@ -191,6 +244,7 @@ const Circle = ({
       />
 
       <Box
+        className="front"
         sx={{
           position: "absolute",
 
@@ -203,9 +257,9 @@ const Circle = ({
               ? "rotateY(180deg)"
               : "rotate(-80deg)"
             : flip
-            ? "scale(.8)"
+            ? `scale(${scale})`
             : "scale(1)",
-          transition: ".5s ease",
+          transition: grow ? ".5s cubic-bezier(.17,.67,0,1.06)" : ".5s ease",
           // transitionDelay: `${i + j}s`,
           backgroundColor: "black",
           borderRadius: "50%",
