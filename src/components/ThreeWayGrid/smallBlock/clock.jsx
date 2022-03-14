@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import { Box, Text, Flex } from "theme-ui";
-import { useState, useRef, memo, useEffect } from "react";
-import { keyframes, css } from "@emotion/react";
+import { useState, memo, useEffect } from "react";
+import { keyframes } from "@emotion/react";
 
-const Clock = memo(function clock({ content }) {
+const Clock = memo(function MemoClock({ content }) {
   const _date = new Date();
 
   const [date, setDate] = useState(null);
@@ -154,6 +154,7 @@ const Clock = memo(function clock({ content }) {
         >
           {[...Array(12)].map((e, i) => (
             <line
+              key={`${e}-${i}`}
               x1="82"
               y1="82"
               x2="100"

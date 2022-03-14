@@ -1,21 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Box, Grid } from "theme-ui";
 
 const CircleGrid = ({ type }) => {
-  const [mousePos] = useState({ x: 0, y: 0 });
-
-  // send mouse position down
-  // useEffect(() => {
-  //   if (type !== "grow") return;
-
-  //   const relayMousePos = (e) => {
-  //     setMousePos({ x: e.clientX, y: e.clientY });
-  //   };
-
-  //   window.addEventListener("mousemove", relayMousePos);
-  //   return () => window.removeEventListener("mousemove", relayMousePos);
-  // }, []);
-
   const [gridArray, setGridArray] = useState(
     Array(5)
       .fill(0)
@@ -129,7 +115,6 @@ const CircleGrid = ({ type }) => {
             handleFlipLeave={
               type === "paint" || type === "rain" ? null : handleFlipper
             }
-            mousePos={mousePos}
             grow={type === "grow"}
             paint={type === "paint"}
           />
@@ -161,33 +146,10 @@ const Circle = ({
   handleFlipLeave,
   grow,
   paint,
-  mousePos,
 }) => {
   const circleRef = useRef();
 
   const [scale] = useState(0.8);
-
-  // Grow eligible circles based on mouse position more dynamic
-  // useEffect(() => {
-  //   if (!circleRef.current || flip) return;
-  //   const rect = circleRef.current.getBoundingClientRect();
-  //   if (!rect.height || !rect.width || !rect.x || !rect.y) return;
-  //   const ex = (rect.x + rect.width) / 2;
-  //   const ey = (rect.y + rect.height) / 2;
-  //   const dx = ex - mousePos.x;
-  //   const dy = ey - mousePos.y;
-  //   const d = Math.hypot(dx, dy);
-  //   console.log(
-  //     d,
-  //     "\n mouse",
-  //     mousePos.x,
-  //     mousePos.y,
-  //     "\n circle:",
-  //     rect.left,
-  //     ey,
-  //     grow
-  //   );
-  // }, [mousePos]);
 
   // fix with springs.
 

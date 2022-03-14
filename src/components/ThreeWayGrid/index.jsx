@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex } from "theme-ui";
+import { Flex, Grid } from "theme-ui";
 import SmallBlock from "./smallBlock/index";
 import LargeBlock from "./large";
 import { useState } from "react";
@@ -45,19 +45,20 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
         />
       </Flex>
 
-      <>
-        <LargeBlock
-          content={large}
-          forwardSx={{ display: ["block", "none"] }}
-        />
+      <Grid
+        sx={{
+          display: ["grid", "none"],
+          borderTop: 0,
+          gridGap: "1px",
+          gridColumn: ["span 2"],
+          gridRow: ["span 2"],
+        }}
+      >
+        <LargeBlock content={large} />
         {smallCollection.map((box) => (
-          <SmallBlock
-            key={box.sys.id}
-            content={box}
-            forwardSx={{ display: ["block", "none"] }}
-          />
+          <SmallBlock key={box.sys.id} content={box} />
         ))}
-      </>
+      </Grid>
     </>
   );
 };
