@@ -1,9 +1,7 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-// import { useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Box, Flex, Text } from "theme-ui";
-import useMarquee from "~/utils/useMarquee";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 
 const MarqueeFeature = ({ list, title }) => {
@@ -60,7 +58,7 @@ const MarqueeSlider = ({
 }) => {
   const marqueeSliderRef = useRef();
 
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(100);
 
   useEffect(() => {
     if (!marqueeSliderRef.current) return;
@@ -83,15 +81,12 @@ const MarqueeSlider = ({
           py: [`${100 / listLength}px`, `${100 / listLength}px`],
           borderTop: "1px solid white",
           height: [`${90 / listLength}%`, `${90 / listLength}%`],
-          // height: ["30px", "70px", "200px"],
-          alignItems: "center",
-          minWidth: "100%",
+          width: "100%",
           fontSize: [`${height * 0.4}px`, `${height * 0.8}px`],
 
           webkitTextFillColor: "none",
           filter: "grayscale(100)",
-          whiteSpace: "nowrap",
-          flexWrap: "nowrap",
+
           transition: "color .5s ease",
           color: "black",
           ":hover": {
@@ -103,59 +98,68 @@ const MarqueeSlider = ({
           },
           "@keyframes slideOut": {
             "0%": {
-              transform: "translateX(-100%)",
-              opacity: 1,
+              transform: "translate(0%, 0)",
             },
             "100%": {
-              transform: "translateX(100%)",
-              opacity: 1,
+              transform: "translate(-100%, 0%)",
             },
           },
 
           ".marquee": {
-            position: "absolute",
-            animation: "slideOut 20s linear infinite",
-            animationDelay: "-10s",
-            animationFillMode: "forwards",
+            animation: "slideOut 3s linear infinite",
+            width: "100%",
+            display: "flex",
+            flexWrap: "nowrap",
             animationDirection: alternate && "reverse",
-            // left: !alternate && "-200%",
+          },
+          ".container": {
+            display: "flex",
           },
         }}
       >
-        <MarqueeContent content={content} li={li} containerRef={containerRef} />
-
-        <MarqueeContent
-          content={content}
-          li={li}
-          containerRef={containerRef}
-          forwardSx={{
-            animationDelay: "0s !important",
-            opacity: 0,
-          }}
-        />
+        <div className="marquee">
+          <MarqueeContent
+            content={content}
+            li={li}
+            containerRef={containerRef}
+          />
+          <MarqueeContent
+            content={content}
+            li={li}
+            containerRef={containerRef}
+          />
+        </div>
       </Flex>
     </Link>
   );
 };
 
-const MarqueeContent = ({ content, li, containerRef, forwardSx }) => {
-  const initialElemRef = useRef();
-
-  const number = useMarquee({ containerRef, initialElemRef, type: "width" });
-
+const MarqueeContent = ({ content, li }) => {
+  const number =
+    content.__typename === "Client"
+      ? content.title.length <= 8
+        ? 2
+        : 1
+      : li.length <= 5
+      ? 2
+      : 1;
   return (
-    <Flex className="marquee" sx={{ ...forwardSx }}>
+    <Flex
+      className="container"
+      sx={{
+        alignItems: "center",
+        height: "100%",
+        flexWrap: "nowrap",
+
+        whiteSpace: "nowrap",
+        minWidth: "100%",
+        justifyContent: "space-around",
+      }}
+    >
       {[...Array(number)].map((e, i) => (
-        <Flex
-          ref={i === 0 ? initialElemRef : null}
-          key={`${e}-${i}`}
-          sx={{
-            width: "100%",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
+        <Fragment key={`${e}-${i}`}>
           <Text
+            as="span"
             sx={{
               textShadow:
                 "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
@@ -165,20 +169,26 @@ const MarqueeContent = ({ content, li, containerRef, forwardSx }) => {
           </Text>
           {content.__typename === "Client" && (
             <Box
+              as="span"
               sx={{
-                mx: "20px",
-                aspectRatio: "3/2",
-                height: "100%",
-                width: ["clamp(10px,6vw,500px)", "clamp(10px,14vw,400px)"],
-                position: "relative",
-                borderRadius: ["12px", "24px"],
-                overflow: "hidden",
+                width: "15%",
+                // position: "relative",
+                // px: "20px",
               }}
             >
-              <ResponsiveImage image={content.image} />
+              <ResponsiveImage
+                forwardSx={{
+                  // aspectRatio: "1",
+                  width: "90%",
+                  height: "90%",
+                  borderRadius: ["12px", "24px"],
+                  overflow: "hidden",
+                }}
+                image={content.image}
+              />
             </Box>
           )}
-        </Flex>
+        </Fragment>
       ))}
     </Flex>
   );

@@ -18,11 +18,10 @@ const FeatureContent = ({ type, content }) => {
 
     case "rings":
       return (
-        <div></div>
-        // <RingFeature
-        //   list={content.stringList || content.clientsCollection.items}
-        //   title={content.title}
-        // />
+        <RingFeature
+          list={content.stringList || content.clientsCollection.items}
+          title={content.title}
+        />
       );
 
     case "manyMarquee":
@@ -32,8 +31,6 @@ const FeatureContent = ({ type, content }) => {
           title={content.title}
         />
       );
-
-    // return <pre>{JSON.stringify(content, null, 2)}</pre>;
 
     default:
       return null;

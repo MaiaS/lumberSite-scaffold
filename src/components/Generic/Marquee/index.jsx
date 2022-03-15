@@ -1,15 +1,9 @@
 /** @jsxImportSource theme-ui */
-import { useRef } from "react";
 import { Box, Text, Flex } from "theme-ui";
-import useMarquee from "~/utils/useMarquee";
 
-// To do: wrap text and calculate string so it always goes full height.
 const Marquee = ({ text }) => {
-  const containerRef = useRef();
-
   return (
     <Box
-      ref={containerRef}
       sx={{
         display: ["none", "unset"],
         backgroundColor: "brand",
@@ -20,8 +14,6 @@ const Marquee = ({ text }) => {
         zIndex: 3,
         maxWidth: "100px",
         width: "100%",
-        pr: "10%",
-        // pb: "100%",
       }}
     >
       <Box
@@ -33,53 +25,57 @@ const Marquee = ({ text }) => {
               opacity: 1,
             },
             "100%": {
-              transform: "translate(0%, 100%)",
+              transform: "translate(0%, 0%)",
               opacity: 1,
             },
           },
           ".marquee": {
-            position: "absolute",
-            width: "100%",
-            top: 0,
-            animation: "slideDown 20s linear infinite",
-            animationDelay: "-10s",
-            animationFillMode: "forwards",
+            animation: "slideDown 10s linear infinite",
+            height: "100%",
+            display: "flex",
+            flexWrap: "nowrap",
+
+            flexDirection: "column",
+          },
+          ".container": {
+            display: "flex",
+
+            flexDirection: "column",
+            minHeight: "100%",
+            justifyContent: "space-around",
+            flexWrap: "nowrap",
+            whiteSpace: "nowrap",
+            gap: "1ch",
           },
         }}
       >
-        <MarqueeContent text={text} containerRef={containerRef} />
-        <MarqueeContent
-          text={text}
-          containerRef={containerRef}
-          forwardSx={{
-            animationDelay: "0s !important",
-            opacity: 0,
-            // transform: "translateX(100%%)",
-          }}
-        />
+        <div className="marquee">
+          <MarqueeContent text={text} />
+          <MarqueeContent text={text} />
+        </div>
       </Box>
     </Box>
   );
 };
 
-const MarqueeContent = ({ text, containerRef, forwardSx }) => {
-  const initialElemRef = useRef();
-
-  const number = useMarquee({ containerRef, initialElemRef, type: "height" });
+const MarqueeContent = ({ text, forwardSx }) => {
+  const list = text.split(" ");
 
   return (
-    <Box
-      className="marquee"
+    <Flex
+      className="container"
       sx={{
         ...forwardSx,
       }}
     >
-      {[...Array(number)].map((e, i) => (
-        <Flex key={`${e}-${i}`} ref={i === 0 ? initialElemRef : null} my="1em">
-          <Text variant="marquee" dangerouslySetInnerHTML={{ __html: text }} />
-        </Flex>
+      {list.map((li, i) => (
+        <Text
+          key={`${li}-${i}`}
+          variant="marquee"
+          dangerouslySetInnerHTML={{ __html: li }}
+        />
       ))}
-    </Box>
+    </Flex>
   );
 };
 
