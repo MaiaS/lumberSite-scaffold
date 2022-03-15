@@ -32,8 +32,6 @@ const FeatureContent = ({ type, content }) => {
         />
       );
 
-    // return <pre>{JSON.stringify(content, null, 2)}</pre>;
-
     default:
       return null;
   }
