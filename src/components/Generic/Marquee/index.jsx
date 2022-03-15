@@ -2,6 +2,10 @@
 import { Box, Text, Flex } from "theme-ui";
 
 const Marquee = ({ text }) => {
+  const list = text.split(" ");
+
+  const totalLetters = text.replace(" ", "").length;
+
   return (
     <Box
       sx={{
@@ -9,6 +13,7 @@ const Marquee = ({ text }) => {
         backgroundColor: "brand",
         whiteSpace: "nowrap",
         overflow: "hidden",
+
         flexGrow: 1,
         position: "relative",
         zIndex: 3,
@@ -31,7 +36,10 @@ const Marquee = ({ text }) => {
           },
           ".marquee": {
             animation: "slideDown 10s linear infinite",
-            height: "100%",
+            height:
+              totalLetters > 10
+                ? `calc(100% + ${totalLetters * 2.5}ch)`
+                : "100%",
             display: "flex",
             flexWrap: "nowrap",
 
@@ -39,7 +47,6 @@ const Marquee = ({ text }) => {
           },
           ".container": {
             display: "flex",
-
             flexDirection: "column",
             minHeight: "100%",
             justifyContent: "space-around",
@@ -50,17 +57,15 @@ const Marquee = ({ text }) => {
         }}
       >
         <div className="marquee">
-          <MarqueeContent text={text} />
-          <MarqueeContent text={text} />
+          <MarqueeContent list={list} />
+          <MarqueeContent list={list} />
         </div>
       </Box>
     </Box>
   );
 };
 
-const MarqueeContent = ({ text, forwardSx }) => {
-  const list = text.split(" ");
-
+const MarqueeContent = ({ list, forwardSx }) => {
   return (
     <Flex
       className="container"
