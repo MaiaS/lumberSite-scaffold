@@ -25,6 +25,7 @@ const Home = ({ content }) => {
               key={c.sys.id}
               large={c.largeBox}
               smallCollection={c.smallBoxesCollection.items}
+              position={c.position}
             />
           );
         if (c.__typename === "MainFeature")

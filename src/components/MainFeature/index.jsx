@@ -12,7 +12,8 @@ const MainFeature = ({ content }) => {
         background: "white",
         flexDirection: marqueePosition === "right" ? "row" : "row-reverse", // row-reverse to show marquee on other side
         color: "black",
-
+        gridColumn: ["span 2", "auto"],
+        gridRow: ["span 2", "auto"],
         aspectRatio: ["1", "3/2"],
         width: "100%",
         "@supports not (aspect-ratio: 1)": {

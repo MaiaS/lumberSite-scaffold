@@ -1,0 +1,1 @@
+As mouse approaches circle, scale circle down from max .8 to min .5
