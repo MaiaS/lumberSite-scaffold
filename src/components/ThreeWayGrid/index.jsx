@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { Flex } from "theme-ui";
-import SmallBlock from "./small";
+import { Flex, Grid } from "theme-ui";
+import SmallBlock from "./smallBlock/index";
 import LargeBlock from "./large";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
             pb: "100%",
           },
           display: ["none", "flex"],
-          flexDirection: position && "row",
+          flexDirection: !position && "row-reverse",
           gridAutoRows: "",
           backgroundColor: "black",
           height: "100%",
@@ -28,28 +28,14 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
             height: "100%",
             width: "100%",
             position: "relative",
-            background: "white",
+            background: "black",
             flexDirection: "column",
-            div: {
-              borderBottom: "1px solid black",
-            },
-            "div:last-child": {
-              borderBottom: "none",
-            },
+            gap: "1px",
           }}
         >
           {smallCollection.map((box) => (
-            <SmallBlock key={box.sys.id} content={box} />
+            <SmallBlock className="smallBlock" key={box.sys.id} content={box} />
           ))}
-
-          <SmallBlock
-            classType={active ? "active" : ""}
-            forwardSx={{
-              height: 0,
-              pb: 0,
-              transition: "1s ease",
-            }}
-          />
         </Flex>
         <LargeBlock
           active={active}
@@ -59,19 +45,20 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
         />
       </Flex>
 
-      <>
-        <LargeBlock
-          content={large}
-          forwardSx={{ display: ["block", "none"] }}
-        />
+      <Grid
+        sx={{
+          display: ["grid", "none"],
+          borderTop: 0,
+          gridGap: "1px",
+          gridColumn: ["span 2"],
+          gridRow: ["span 2"],
+        }}
+      >
+        <LargeBlock content={large} />
         {smallCollection.map((box) => (
-          <SmallBlock
-            key={box.sys.id}
-            content={box}
-            forwardSx={{ display: ["block", "none"] }}
-          />
+          <SmallBlock key={box.sys.id} content={box} />
         ))}
-      </>
+      </Grid>
     </>
   );
 };

@@ -142,7 +142,6 @@ const RingSet = memo(function RingSet({ list, title }) {
 });
 
 const Ringlet = ({ li, i, list }) => {
-  // console.log("rerender ringlet " + i);
   const getCircumference = (radius) => {
     return 2 * Math.PI * radius;
   };
