@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Grid } from "theme-ui";
+import { Flex } from "theme-ui";
 import SmallBlock from "./smallBlock/index";
 import LargeBlock from "./large";
 import { useState } from "react";

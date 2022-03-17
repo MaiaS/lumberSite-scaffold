@@ -1,17 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Box, Container, Flex, IconButton, Text } from "theme-ui";
+import { Box, Container, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
-import {
-  motion,
-  useDragControls,
-  AnimatePresence,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
-import { useMedia, useMotion } from "react-use";
+import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { useMedia } from "react-use";
 import ArrowBack from "/public/assets/images/arrow-back.svg";
 import { useState } from "react";
-import { KnownTypeNamesRule } from "graphql";
 
 const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
   const mainImage = content?.mainImage ?? content?.client?.image;
@@ -52,25 +45,12 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
           />
         )}
       </AnimatePresence>
-      {active && (
-        <Activated
-          mainImage={mainImage}
-          content={content}
-          close={handleActivate}
-        />
-      )}
+      {active && <Activated content={content} close={handleActivate} />}
     </Box>
   );
 };
 
 const Unactivated = ({ mainImage, content, handleActivate }) => {
-  const getRandomColor = (opacity) => {
-    const call = (limit) => Math.max(limit, Math.floor(Math.random() * 225));
-    const r = call(50);
-    const g = call(100);
-    const b = call(200);
-    return `rgba(${r},${g},${b}, ${opacity})`;
-  };
   return (
     <Container
       onClick={handleActivate}
@@ -134,7 +114,7 @@ const Unactivated = ({ mainImage, content, handleActivate }) => {
   );
 };
 
-const Activated = ({ mainImage, content, close }) => {
+const Activated = ({ content, close }) => {
   const [page, setPage] = useState(0);
   const x = useMotionValue(0);
   const [xAnim, setxAnim] = useState(x);
@@ -144,7 +124,6 @@ const Activated = ({ mainImage, content, close }) => {
   const handleDragDirection = (i) => {
     const offset = i.offset.x;
     if (offset < 30) {
-      console.log("next", page + 1);
       setxAnim(-100);
       if (page >= list.length - 1) {
         close();
@@ -158,7 +137,6 @@ const Activated = ({ mainImage, content, close }) => {
         close();
         return;
       }
-      console.log("prev", page - 1);
       setPage(page - 1);
     }
   };
@@ -194,7 +172,7 @@ const Activated = ({ mainImage, content, close }) => {
       }}
     >
       {!mobile && <Arrow handleClick={() => handleClick(true)} next />}
-      {!mobile && <Arrow handleClick={() => handleClick(true)} prev />}
+      {!mobile && <Arrow handleClick={() => handleClick(true)} />}
 
       <AnimatePresence initial={false}>
         {list.map(
@@ -208,7 +186,6 @@ const Activated = ({ mainImage, content, close }) => {
                 transition={{ type: "spring", stiffness: 100 }}
                 dragElastic={0.1}
                 dragConstraints={{ left: 0, right: 0 }}
-                key={`${li}-${i}`}
                 initial={{ x: x, opacity: 0, scale: 0.9 }}
                 animate={{ x: 0, opacity: 1, scale: 1 }}
                 exit={{ x: xAnim, opacity: 0, scale: 0.9 }}
@@ -230,12 +207,12 @@ const Activated = ({ mainImage, content, close }) => {
   );
 };
 
-const Arrow = ({ handleClick, next, prev }) => {
+const Arrow = ({ handleClick, next }) => {
   return (
     <Box
       sx={{
         left: next && 0,
-        right: prev && 0,
+        right: !next && 0,
         height: "100%",
         position: "absolute",
         p: "70px",

@@ -7,8 +7,6 @@ import Eyes from "./eyes";
 import { memo } from "react";
 import TextImage from "./TextImage";
 
-import { motion } from "framer-motion";
-
 const SmallBlock = memo(function SmallBlock({
   forwardSx,
   classType,
