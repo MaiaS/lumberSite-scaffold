@@ -4,7 +4,7 @@ import { Box, Text, Flex } from "theme-ui";
 import ReactMarkdown from "react-markdown";
 
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Stars, Html } from "@react-three/drei";
+import { Stars } from "@react-three/drei";
 import { linearScale } from "~/utils/linearScale";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { motion as motion3d } from "framer-motion-3d";
@@ -13,7 +13,6 @@ import * as THREE from "three";
 
 const CarouselFeature = ({ title, description, list }) => {
   const [start, setStart] = useState(false);
-  const [load, setLoad] = useState(false);
 
   const handleViewport = (e) => {
     setStart(e.isIntersecting);
@@ -160,7 +159,6 @@ const Cylinder = (props) => {
   const myref = useRef();
   const [rotation, setRotation] = useState(0);
   const y = useMotionValue(-5);
-  const scaleZ = useTransform(y, (v) => v / 100);
   const rotateZ = useTransform(y, (value) => value / 4);
   useFrame(
     () => (
@@ -174,12 +172,12 @@ const Cylinder = (props) => {
       scale={[0.3, 0.3, 0.3]}
       animate={{ y: 0, scale: 1, rotateZ: 100 }}
       transition={{ type: "spring", duration: 4 }}
-      // animate={{ opacity: 1, translateY: "0" }}
     >
       <group {...props}>
         <group ref={myref}>
           {list.map((li, i) => (
             <VideoSlice
+              key={li.id}
               index={i}
               length={list.length}
               item={li}
@@ -245,7 +243,7 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
       // clean new elem
       videoElemRef.current.remove();
     };
-  }, [currentRotation]);
+  }, [currentRotation, videoElemRef.current]);
 
   return (
     <mesh scale={1}>
@@ -270,20 +268,6 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
           side={THREE.DoubleSide}
         />
       )}
-    </mesh>
-  );
-};
-
-const SimpleCylinder = (props) => {
-  return (
-    <mesh {...props}>
-      <cylinderBufferGeometry args={[3, 3, 2.5, 40, 2, true, 0, Math.PI * 2]} />
-
-      <meshLambertMaterial
-        color="twilight"
-        toneMapped={false}
-        side={THREE.DoubleSide}
-      />
     </mesh>
   );
 };
