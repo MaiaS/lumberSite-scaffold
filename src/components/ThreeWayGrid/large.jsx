@@ -1,21 +1,23 @@
 /** @jsxImportSource theme-ui */
-import { Box, Container, Flex, Text } from "theme-ui";
+import { Box, Container, Flex, IconButton, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
+import {
+  motion,
+  useDragControls,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
+import { useMedia, useMotion } from "react-use";
+import ArrowBack from "/public/assets/images/arrow-back.svg";
+import { useState } from "react";
+import { KnownTypeNamesRule } from "graphql";
 
 const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
   const mainImage = content?.mainImage ?? content?.client?.image;
 
-  const getRandomColor = (opacity) => {
-    const call = (limit) => Math.max(limit, Math.floor(Math.random() * 225));
-    const r = call(50);
-    const g = call(100);
-    const b = call(200);
-    return `rgba(${r},${g},${b}, ${opacity})`;
-  };
   return (
     <Box
-      onClick={handleActivate}
-      // className={active ? "active" : ""}
       sx={{
         cursor: "url('/assets/cursor/GoCursor.svg'), auto",
         overflow: "hidden",
@@ -23,15 +25,12 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
         backgroundColor: "white",
         position: "relative",
         zIndex: 2,
-        // gridColumn: [null, "2 / span 2 "],
-        // gridRow: [null, "1 / span 2"],
         gridColumn: ["1 / span 2"],
         gridRow: ["1 / span 2"],
         filter: "grayscale(100)",
         transition: "1s ease",
-        flexShrink: 0.001,
-        height: "100%",
-        width: ["100%", "65%"],
+        flexShrink: 0.0,
+        minHeight: "100%",
         flexGrow: 0,
         ":hover": {
           filter: "grayscale(0)",
@@ -44,16 +43,58 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
         ...forwardSx,
       }}
     >
-      <Container variant="container.largeBlock" sx={{ height: "100%" }}>
+      <AnimatePresence inital={false}>
+        {!active && (
+          <Unactivated
+            mainImage={mainImage}
+            content={content}
+            handleActivate={handleActivate}
+          />
+        )}
+      </AnimatePresence>
+      {active && (
+        <Activated
+          mainImage={mainImage}
+          content={content}
+          close={handleActivate}
+        />
+      )}
+    </Box>
+  );
+};
+
+const Unactivated = ({ mainImage, content, handleActivate }) => {
+  const getRandomColor = (opacity) => {
+    const call = (limit) => Math.max(limit, Math.floor(Math.random() * 225));
+    const r = call(50);
+    const g = call(100);
+    const b = call(200);
+    return `rgba(${r},${g},${b}, ${opacity})`;
+  };
+  return (
+    <Container
+      onClick={handleActivate}
+      variant="container.largeBlock"
+      sx={{ height: "100%" }}
+    >
+      <motion.div
+        sx={{
+          height: ["75%", "60%"],
+          maxHeight: "500px",
+          borderRadius: "24px",
+          overflow: "hidden",
+          mb: ["14px", "32px"],
+          zIndex: 2,
+          position: "relative",
+        }}
+        initial={{ scale: 2, translateY: -50, opacity: 0.3 }}
+        animate={{ scale: 1, opacity: 1, translateY: 0 }}
+        exit={{ scale: 2, translateY: 100, opacity: 0.3 }}
+      >
         <Box
           sx={{
-            borderRadius: "24px",
-            height: "60%",
-            maxHeight: "500px",
-            background: "grey",
-            overflow: "hidden",
+            height: "100%",
             filter: "grayscale(0)",
-            mb: ["16px", "32px"],
 
             span: {
               position: "static !important",
@@ -62,44 +103,267 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
         >
           <ResponsiveImage height="100%" width="100%" image={mainImage} />
         </Box>
-        <Text
-          sx={{ fontWeight: 700, fontSize: ["16px", "clamp(20px, 5vw, 32px)"] }}
-        >
-          {content.title}
-        </Text>
+      </motion.div>
+      <Text sx={{ fontWeight: 700, fontSize: ["clamp(20px, 5vw, 32px)"] }}>
+        {content.title}
+      </Text>
 
-        <Box
-          sx={{ height: 0, transition: "1s ease", opacity: active ? 1 : 0 }}
-          dangerouslySetInnerHTML={{ __html: content.description }}
-        ></Box>
+      <Box
+        sx={{
+          display: "inline",
+          height: "40px",
+          minWidth: "100%",
+          transition: "1s ease",
+          background: "red",
+        }}
+      ></Box>
 
-        <Flex
+      <Flex
+        sx={{
+          display: ["flex"],
+          gap: "5px",
+          position: "absolute",
+          bottom: "4%",
+        }}
+      >
+        {content.tags.map((tag, i) => (
+          <Tag tag={tag} key={`${tag}-${i}`} />
+        ))}
+      </Flex>
+    </Container>
+  );
+};
+
+const Activated = ({ mainImage, content, close }) => {
+  const [page, setPage] = useState(0);
+  const x = useMotionValue(0);
+  const [xAnim, setxAnim] = useState(x);
+
+  const list = content.client.clientPageCollection.items;
+
+  const handleDragDirection = (i) => {
+    const offset = i.offset.x;
+    if (offset < 30) {
+      console.log("next", page + 1);
+      setxAnim(-100);
+      if (page >= list.length - 1) {
+        close();
+        return;
+      }
+      setPage(page + 1);
+    }
+    if (offset > 30) {
+      setxAnim(100);
+      if (page <= 0) {
+        close();
+        return;
+      }
+      console.log("prev", page - 1);
+      setPage(page - 1);
+    }
+  };
+  const handleClick = (next) => {
+    if (next) {
+      setxAnim(-100);
+      if (page >= list.length - 1) {
+        close();
+        return;
+      }
+    }
+    setPage(page + 1);
+    if (!next) {
+      if (page <= 0) {
+        close();
+        return;
+      }
+      setxAnim(100);
+
+      setPage(page - 1);
+    }
+  };
+  const mobile = useMedia("(max-width:767px)");
+
+  return (
+    <Box
+      sx={{
+        minHeight: "100%",
+        width: "100%",
+        position: "relative",
+        background:
+          (page < list.length && page > -1 && list[page]?.color) ?? "black",
+      }}
+    >
+      {!mobile && <Arrow handleClick={() => handleClick(true)} next />}
+      {!mobile && <Arrow handleClick={() => handleClick(true)} prev />}
+
+      <AnimatePresence initial={false}>
+        {list.map(
+          (li, i) =>
+            i === page && (
+              <motion.div
+                key={list.id}
+                drag="x"
+                onDragEnd={(e, i) => handleDragDirection(i)}
+                dragMomentum={true}
+                transition={{ type: "spring", stiffness: 100 }}
+                dragElastic={0.1}
+                dragConstraints={{ left: 0, right: 0 }}
+                key={`${li}-${i}`}
+                initial={{ x: x, opacity: 0, scale: 0.9 }}
+                animate={{ x: 0, opacity: 1, scale: 1 }}
+                exit={{ x: xAnim, opacity: 0, scale: 0.9 }}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <ClientPage content={content} current={li} mobile={mobile} />
+              </motion.div>
+            )
+        )}
+      </AnimatePresence>
+    </Box>
+  );
+};
+
+const Arrow = ({ handleClick, next, prev }) => {
+  return (
+    <Box
+      sx={{
+        left: next && 0,
+        right: prev && 0,
+        height: "100%",
+        position: "absolute",
+        p: "70px",
+        zIndex: 1,
+        display: "flex",
+        justifyContent: "end",
+        alignItems: "center",
+      }}
+    >
+      <motion.div
+        onClick={handleClick}
+        whileHover={{ scale: 1.3, translateX: next ? -10 : 10 }}
+        sx={{
+          borderRadius: "50%",
+          background: "white",
+          height: "60px",
+          width: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
           sx={{
-            display: ["none", "flex"],
-            gap: "5px",
-            position: "absolute",
-            bottom: "4%",
+            transform: next ? "scale(-1)" : "scale(1)",
+            mt: next ? "-3px" : "3px",
           }}
         >
-          {content.tags.map((tag, i) => (
-            <Box
-              key={`${tag + i}`}
-              sx={{
-                fontSize: "13px",
-                px: "10px",
-                m: 0,
-                py: "4px",
-                borderRadius: "4px",
-                width: "fit-content",
-                textTransform: "uppercase",
-                backgroundColor: getRandomColor(0.8),
-              }}
-            >
-              {tag}
-            </Box>
-          ))}
+          <ArrowBack fill="white" />
+        </div>
+      </motion.div>
+    </Box>
+  );
+};
+
+const ClientPage = ({ content, current, mobile }) => {
+  const { type } = current;
+  return (
+    <Flex
+      sx={{
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {type === "fullWidthImage" && (
+        <ResponsiveImage
+          image={current.media}
+          heightOut={mobile ? 4500 : null}
+          drag={false}
+          forwardSx={{
+            height: "100%",
+          }}
+        />
+      )}
+      {type === "image" && (
+        <Box
+          sx={{
+            width: "80%",
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: "10px",
+            boxShadow: "10px 10px 30px 0px rgba(0,0,0,.3)",
+          }}
+        >
+          <ResponsiveImage image={current.media} drag={false} />
+        </Box>
+      )}
+      {type === "description" && (
+        <Flex
+          sx={{
+            flexDirection: "column",
+            justifyContent: "center",
+            height: "100%",
+            textAlign: "center",
+          }}
+        >
+          <Text
+            sx={{
+              fontWeight: 600,
+              fontSize: "14px",
+              textTransform: "uppercase",
+              mb: "16px",
+              display: "block",
+            }}
+          >
+            {content.title}
+          </Text>
+          <Text
+            sx={{
+              display: "inline",
+              fontSize: "52px",
+              lineHeight: "65px",
+              mb: ["30px", "100px"],
+              mx: "auto",
+              width: [null, "62%"],
+            }}
+          >
+            {current.description}
+          </Text>
+          <Flex sx={{ justifyContent: "center", gap: "8px" }}>
+            {content.tags.map((tag, i) => (
+              <Tag tag={tag} key={`${tag}-${i}`} />
+            ))}
+          </Flex>
         </Flex>
-      </Container>
+      )}
+    </Flex>
+  );
+};
+
+const Tag = ({ tag }) => {
+  return (
+    <Box
+      sx={{
+        fontSize: "13px",
+        px: "10px",
+        m: 0,
+        py: "4px",
+        borderRadius: "4px",
+        width: "fit-content",
+        textTransform: "uppercase",
+        background: "rgba(0, 0, 0, 0.08)",
+        // backgroundColor: getRandomColor(0.8),
+      }}
+    >
+      {tag}
     </Box>
   );
 };

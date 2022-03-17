@@ -10,10 +10,7 @@ const Layout = ({ children }) => {
         <Box
           sx={{
             display: ["grid"],
-            gridTemplateColumns: [
-              "repeat(auto-fit, minmax(200px, 1fr))",
-              "1fr",
-            ],
+            gridTemplateColumns: ["1fr", "1fr"],
             gridGap: "1px",
             backgroundColor: "black",
           }}
