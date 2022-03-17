@@ -1,19 +1,18 @@
 import RingFeature from "./ring";
 import MarqueeFeature from "./marquee";
 
-// import CarouselFeature from "./carousel";
+import CarouselFeature from "./carousel";
 
 const FeatureContent = ({ type, content }) => {
   // type can be `carousel`, `rings`, or `manyMarquee`
   switch (type) {
     case "carousel":
       return (
-        // <CarouselFeature
-        //   title={content.title}
-        //   description={content.description}
-        //   list={content.clientsCollection.items}
-        // />
-        <div></div>
+        <CarouselFeature
+          title={content.title}
+          description={content.description}
+          list={content.clientsCollection.items}
+        />
       );
 
     case "rings":
