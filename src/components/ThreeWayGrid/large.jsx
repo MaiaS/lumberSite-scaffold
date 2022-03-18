@@ -142,7 +142,7 @@ const Activated = ({ content, close }) => {
   };
   const handleClick = (next) => {
     if (next) {
-      setxAnim(-100);
+      setxAnim(-50);
       if (page >= list.length - 1) {
         close();
         return;
@@ -154,7 +154,7 @@ const Activated = ({ content, close }) => {
         close();
         return;
       }
-      setxAnim(100);
+      setxAnim(50);
 
       setPage(page - 1);
     }
@@ -171,24 +171,29 @@ const Activated = ({ content, close }) => {
           (page < list.length && page > -1 && list[page]?.color) ?? "black",
       }}
     >
-      {!mobile && <Arrow handleClick={() => handleClick(true)} next />}
+      {!mobile && <Arrow handleClick={() => handleClick(false)} next />}
       {!mobile && <Arrow handleClick={() => handleClick(true)} />}
 
-      <AnimatePresence initial={false}>
-        {list.map(
-          (li, i) =>
+      <AnimatePresence initial={true}>
+        {list.map((li, i) => {
+          return (
             i === page && (
               <motion.div
-                key={list.id}
+                key={li.sys.id}
                 drag="x"
                 onDragEnd={(e, i) => handleDragDirection(i)}
                 dragMomentum={true}
-                transition={{ type: "spring", stiffness: 100 }}
-                dragElastic={0.1}
+                transition={{ type: "spring", stiffness: 100, damping: 10 }}
+                dragElastic={0.5}
                 dragConstraints={{ left: 0, right: 0 }}
-                initial={{ x: x, opacity: 0, scale: 0.9 }}
-                animate={{ x: 0, opacity: 1, scale: 1 }}
-                exit={{ x: xAnim, opacity: 0, scale: 0.9 }}
+                initial={{
+                  x: xAnim,
+                  opacity: 0,
+                  scale: 0.9,
+                  rotateY: xAnim * 0.5,
+                }}
+                animate={{ x: 0, opacity: 1, scale: 1, rotateY: 0 }}
+                // exit={{ x: xAnim, opacity: 0, scale: 0.9, rotateY: -xAnim / 2 }}
                 sx={{
                   position: "absolute",
                   top: 0,
@@ -201,7 +206,8 @@ const Activated = ({ content, close }) => {
                 <ClientPage content={content} current={li} mobile={mobile} />
               </motion.div>
             )
-        )}
+          );
+        })}
       </AnimatePresence>
     </Box>
   );
@@ -286,7 +292,7 @@ const ClientPage = ({ content, current, mobile }) => {
         <Flex
           sx={{
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "space-evenly",
             height: "100%",
             textAlign: "center",
           }}
@@ -296,7 +302,6 @@ const ClientPage = ({ content, current, mobile }) => {
               fontWeight: 600,
               fontSize: "14px",
               textTransform: "uppercase",
-              mb: "16px",
               display: "block",
             }}
           >
@@ -307,7 +312,6 @@ const ClientPage = ({ content, current, mobile }) => {
               display: "inline",
               fontSize: "52px",
               lineHeight: "65px",
-              mb: ["30px", "100px"],
               mx: "auto",
               width: [null, "62%"],
             }}

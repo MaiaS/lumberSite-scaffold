@@ -18,7 +18,7 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
           flexDirection: !position && "row-reverse",
           gridAutoRows: "",
           backgroundColor: "black",
-          height: "100%",
+          minHeight: "100%",
           width: "100%",
           gridGap: "1px",
         }}
