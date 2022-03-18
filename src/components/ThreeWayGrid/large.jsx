@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Box, Container, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
-import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useMedia } from "react-use";
 import ArrowBack from "/public/assets/images/arrow-back.svg";
 import { useState } from "react";
@@ -116,8 +116,7 @@ const Unactivated = ({ mainImage, content, handleActivate }) => {
 
 const Activated = ({ content, close }) => {
   const [page, setPage] = useState(0);
-  const x = useMotionValue(0);
-  const [xAnim, setxAnim] = useState(x);
+  const [xAnim, setxAnim] = useState(50);
 
   const list = content.client.clientPageCollection.items;
 
@@ -183,9 +182,15 @@ const Activated = ({ content, close }) => {
                 drag="x"
                 onDragEnd={(e, i) => handleDragDirection(i)}
                 dragMomentum={true}
-                transition={{ type: "spring", stiffness: 100, damping: 10 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 10,
+                  opacity: { duration: 0.2 },
+                }}
                 dragElastic={0.5}
-                dragConstraints={{ left: 0, right: 0 }}
+                dragConstraints={{ left: 0.1, right: 0.1 }}
+                whileDrag={{ scale: 0.9, rotateY: -10 }}
                 initial={{
                   x: xAnim,
                   opacity: 0,
@@ -193,7 +198,6 @@ const Activated = ({ content, close }) => {
                   rotateY: xAnim * 0.5,
                 }}
                 animate={{ x: 0, opacity: 1, scale: 1, rotateY: 0 }}
-                // exit={{ x: xAnim, opacity: 0, scale: 0.9, rotateY: -xAnim / 2 }}
                 sx={{
                   position: "absolute",
                   top: 0,
