@@ -1,11 +1,8 @@
-// import MainFeature from "~/src/components/MainFeature";
-// import ThreeWayGrid from "~/src/components/ThreeWayGrid";
-
+import dynamic from "next/dynamic";
 import { queryPage } from "lib/contentful/graphql/queries/queryPage";
-import MainFeature from "~/components/MainFeature";
-import ThreeWayGrid from "~/components/ThreeWayGrid";
 
-// import { queryPage } from "~/lib/contentful/graphql/queries/queryPage";
+const MainFeature = dynamic(() => import("~/components/MainFeature"));
+const ThreeWayGrid = dynamic(() => import("~/components/ThreeWayGrid"));
 
 export async function getStaticProps() {
   const content = await queryPage("home");

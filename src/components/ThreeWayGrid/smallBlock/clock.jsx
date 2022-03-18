@@ -2,6 +2,7 @@
 import { Box, Text, Flex } from "theme-ui";
 import { useState, memo, useEffect } from "react";
 import { keyframes } from "@emotion/react";
+import { linearScale } from "~/utils/linearScale";
 
 const Clock = memo(function MemoClock({ content }) {
   const _date = new Date();
@@ -27,12 +28,6 @@ const Clock = memo(function MemoClock({ content }) {
       setHours(date.getHours());
     }
   }, [date]);
-
-  const linearScale = (current, minO, maxO, minN, maxN) => {
-    if (maxO === minO) return 0;
-    const newNum = ((current - minO) * (maxN - minN)) / (maxO - minO) + minN;
-    return newNum;
-  };
 
   // Set up animation and calculations
   const secStart = linearScale(seconds, 0, 60, 0, 360) + 45;
@@ -86,7 +81,7 @@ const Clock = memo(function MemoClock({ content }) {
         },
         height: "75%",
         width: "75%",
-        my: "12.5%",
+        top: "12.5%",
         position: "relative",
         overflow: "hidden",
         border: "10px solid",
@@ -100,6 +95,7 @@ const Clock = memo(function MemoClock({ content }) {
         sx={{
           width: "100%",
           height: "100%",
+
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",

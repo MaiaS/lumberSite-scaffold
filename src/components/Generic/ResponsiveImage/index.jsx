@@ -13,11 +13,13 @@ const ResponsiveImage = ({
   heightOut,
   widthOut,
   forwardSx = {},
+  drag,
 }) => {
   const { url, title, width, height } = image;
   return (
     <Box sx={{ width: "100%", ...forwardSx }}>
       <Image
+        draggable={drag}
         alt={title}
         src={`${url}?fm=webp`}
         objectFit="cover"
