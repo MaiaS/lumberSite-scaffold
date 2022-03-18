@@ -2,6 +2,7 @@ import RingFeature from "./ring";
 import MarqueeFeature from "./marquee";
 
 import CarouselFeature from "./carousel";
+import Footer from "./footer";
 
 const FeatureContent = ({ type, content }) => {
   // type can be `carousel`, `rings`, or `manyMarquee`
@@ -30,6 +31,9 @@ const FeatureContent = ({ type, content }) => {
           title={content.title}
         />
       );
+
+    case "footerGame":
+      return <Footer />;
 
     default:
       return null;
