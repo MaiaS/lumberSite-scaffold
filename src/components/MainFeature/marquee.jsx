@@ -1,30 +1,42 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-// import { useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Box, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 
 const MarqueeFeature = ({ list, title }) => {
+  const containerRef = useRef();
+
   return (
     <Box
+      ref={containerRef}
       sx={{
         height: "100%",
         width: "100%",
         backgroundColor: "black",
         overflow: "hidden",
-        overflowStyle: "marquee",
+        position: "relative",
         color: "white",
       }}
     >
       <Text
         as="h3"
-        sx={{ pt: "39px", pl: "30px", m: 0, mb: ["30px", "100px"] }}
+        sx={{
+          pt: "39px",
+          pl: "30px",
+          pb: "clamp(20px, 5vw, 100px)",
+          height: "20%",
+          m: 0,
+        }}
       >
         {title}
       </Text>
-      <Flex sx={{ flexDirection: "column" }}>
+      <Flex sx={{ flexDirection: "column", height: "80%" }}>
         {list.map((li, i) => (
           <MarqueeSlider
+            listLength={list.length}
+            containerRef={containerRef}
+            alternate={i % 2 === 0 && true}
             key={`${li}-${i}`}
             text={li.__typename === "Client" ? li.title : li}
             content={li}
@@ -37,74 +49,144 @@ const MarqueeFeature = ({ list, title }) => {
 
 export default MarqueeFeature;
 
-const MarqueeSlider = ({ content, li }) => {
-  // const stringWidth = useRef();
+const MarqueeSlider = ({
+  content,
+  li,
+  alternate,
+  containerRef,
+  listLength,
+}) => {
+  const marqueeSliderRef = useRef();
 
-  // const [width, setWidth] = useState("100%");
-  // useEffect(() => {
-  //   const bound = textRef.current?.getBoundingClientRect();
-  //   console.log(bound);
-  //   setWidth(bound.width);
-  //   window.addEventListener("resize", () => {
-  //     const bound = textRef.current?.getBoundingClientRect();
-  //     setWidth(bound.width);
-  //   });
-  // }, []);
+  const [height, setHeight] = useState(100);
+
+  useEffect(() => {
+    if (!marqueeSliderRef.current) return;
+
+    const resizeMarqueeText = () => {
+      const rect = marqueeSliderRef.current.getBoundingClientRect();
+      setHeight(rect.height);
+    };
+    window.addEventListener("resize", resizeMarqueeText);
+    resizeMarqueeText();
+    return () => window.removeEventListener("resize", resizeMarqueeText);
+  }, [marqueeSliderRef]);
 
   return (
     <Link href={content.url}>
       <Flex
+        ref={marqueeSliderRef}
         sx={{
-          alignItems: "center",
-          cursor: "pointer",
-          width: "fit-content",
-          fontSize: ["30px", "70px"],
+          cursor: "url('/assets/cursor/GoCursor.svg'), pointer",
+          py: [`${100 / listLength}px`, `${100 / listLength}px`],
           borderTop: "1px solid white",
+          height: [`${90 / listLength}%`, `${90 / listLength}%`],
+          width: "100%",
+          fontSize: [`${height * 0.4}px`, `${height * 0.8}px`],
+
           webkitTextFillColor: "none",
-          pb: "5px",
           filter: "grayscale(100)",
-          whiteSpace: "nowrap",
-          flexWrap: "nowrap",
-          svg: {
-            transition: ".3s ease",
-          },
+
+          transition: "color .5s ease",
           color: "black",
-          transition: ".5s ease",
-          gap: "30px",
           ":hover": {
             filter: "grayscale(0)",
             color: "white",
+            ".marquee": {
+              animationPlayState: "paused",
+            },
+          },
+          "@keyframes slideOut": {
+            "0%": {
+              transform: "translate(0%, 0)",
+            },
+            "100%": {
+              transform: "translate(-100%, 0%)",
+            },
+          },
+
+          ".marquee": {
+            animation: "slideOut 10s linear infinite",
+            width: "100%",
+            display: "flex",
+            flexWrap: "nowrap",
+            animationDirection: alternate && "reverse",
+          },
+          ".container": {
+            display: "flex",
           },
         }}
       >
-        {[...Array(4)].map((e, i) => (
-          <Flex key={`${e}-${i}`} sx={{ width: "100%", alignItems: "center" }}>
-            <Text
-              sx={{
-                textShadow:
-                  "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
-              }}
-            >
-              {content.__typename === "Client" ? content.title : li}
-            </Text>
-            {content.__typename === "Client" && (
-              <Box
-                sx={{
-                  ml: "30px",
-                  my: ["4px", "13px"],
-                  width: "15%",
-                  minWidth: ["50px", "100px"],
-                  height: "fit-content",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                }}
-              >
-                <ResponsiveImage image={content.image} />
-              </Box>
-            )}
-          </Flex>
-        ))}
+        <div className="marquee">
+          <MarqueeContent
+            content={content}
+            li={li}
+            containerRef={containerRef}
+          />
+          <MarqueeContent
+            content={content}
+            li={li}
+            containerRef={containerRef}
+          />
+        </div>
       </Flex>
     </Link>
+  );
+};
+
+const MarqueeContent = ({ content, li }) => {
+  const number =
+    content.__typename === "Client"
+      ? content.title.length <= 8
+        ? 2
+        : 1
+      : li.length <= 5
+      ? 2
+      : 1;
+  return (
+    <Flex
+      className="container"
+      sx={{
+        alignItems: "center",
+        height: "100%",
+        flexWrap: "nowrap",
+
+        whiteSpace: "nowrap",
+        minWidth: "100%",
+        justifyContent: "space-around",
+      }}
+    >
+      {[...Array(number)].map((e, i) => (
+        <Fragment key={`${e}-${i}`}>
+          <Text
+            as="span"
+            sx={{
+              textShadow:
+                "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
+            }}
+          >
+            {content.__typename === "Client" ? content.title : li}
+          </Text>
+          {content.__typename === "Client" && (
+            <Box
+              as="span"
+              sx={{
+                width: "15%",
+              }}
+            >
+              <ResponsiveImage
+                forwardSx={{
+                  width: "90%",
+                  height: "90%",
+                  borderRadius: ["12px", "24px"],
+                  overflow: "hidden",
+                }}
+                image={content.image}
+              />
+            </Box>
+          )}
+        </Fragment>
+      ))}
+    </Flex>
   );
 };

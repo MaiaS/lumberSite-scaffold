@@ -1,19 +1,18 @@
 import RingFeature from "./ring";
 import MarqueeFeature from "./marquee";
 
-// import CarouselFeature from "./carousel";
+import CarouselFeature from "./carousel";
 
 const FeatureContent = ({ type, content }) => {
   // type can be `carousel`, `rings`, or `manyMarquee`
   switch (type) {
     case "carousel":
       return (
-        // <CarouselFeature
-        //   title={content.title}
-        //   description={content.description}
-        //   list={content.clientsCollection.items}
-        // />
-        <div></div>
+        <CarouselFeature
+          title={content.title}
+          description={content.description}
+          list={content.clientsCollection.items}
+        />
       );
 
     case "rings":
@@ -25,13 +24,12 @@ const FeatureContent = ({ type, content }) => {
       );
 
     case "manyMarquee":
-      return null;
-      // <MarqueeFeature
-      //   list={content.stringList || content.clientsCollection.items}
-      //   title={content.title}
-      // />
-
-    // return <pre>{JSON.stringify(content, null, 2)}</pre>;
+      return (
+        <MarqueeFeature
+          list={content.stringList || content.clientsCollection.items}
+          title={content.title}
+        />
+      );
 
     default:
       return null;

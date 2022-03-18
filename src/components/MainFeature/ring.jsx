@@ -1,10 +1,14 @@
 /** @jsxImportSource theme-ui */
 import { useRef, useEffect, useState, memo } from "react";
+import { useMedia } from "react-use";
 import { Box, Flex, Text } from "theme-ui";
+import { motion } from "framer-motion";
 
 const RingFeature = ({ list, title }) => {
   const ringRef = useRef(null);
   const cursorRef = useRef(null);
+
+  const [start, setStart] = useState(false);
 
   /** Replace mouse with rotating pointer on mouse enter.
    * Initially set mouse to false so that it doesn't eat up cpu on mobile and before mouse enters
@@ -12,7 +16,7 @@ const RingFeature = ({ list, title }) => {
    * Calculate mouse rotation getting angle btwn fake mouse position and target element
    * https://css-tricks.com/can-you-rotate-the-cursor-in-css/
    */
-  const [mouseIn, setMouseIn] = useState(false);
+  const [mouseIn, setMouseIn] = useState(true);
 
   const calculateRotate = (cursor, elem) => {
     const cursorRect = cursor.getBoundingClientRect();
@@ -45,8 +49,10 @@ const RingFeature = ({ list, title }) => {
     });
   };
 
+  const query = useMedia("(any-hover: none)");
+
   useEffect(() => {
-    if (!ringRef.current || !cursorRef.current || !mouseIn) return;
+    if (!ringRef.current || !cursorRef.current || !mouseIn || query) return;
 
     const handleLeave = () => {
       cursorRef.current.style.display = "none";
@@ -70,10 +76,6 @@ const RingFeature = ({ list, title }) => {
       sx={{
         cursor: "none",
         position: "relative",
-
-        // top: "50%",
-        // left: "50%",
-        // transform: "translate(-50%, -50%)",
         background: "black",
         height: "100%",
         width: "100%",
@@ -87,15 +89,13 @@ const RingFeature = ({ list, title }) => {
         ".circle": {
           stroke: "brand",
         },
-        ".enter": {
-          transform: "scale(0)",
+        ".before": {
+          animationName: null,
+          animation: "none !important",
         },
         ".start": {
           transform: "scale(1)",
           animationName: "rotation",
-          // svg: {
-          //
-          // },
         },
       }}
     >
@@ -104,30 +104,31 @@ const RingFeature = ({ list, title }) => {
         className="mover"
         src="/assets/cursor/HoverCursor.svg"
       />
-      <Flex
+      <motion.div
         sx={{
+          display: "flex",
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
           width: "100%",
         }}
+        onViewportEnter={() => setStart(true)}
+        onViewportLeave={() => setStart(false)}
       >
-        <RingSet list={list} title={title} mouseIn={mouseIn} />
-      </Flex>
+        {start && <RingSet list={list} title={title} />}
+      </motion.div>
     </Box>
   );
 };
 
-const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
+const RingSet = memo(function RingSet({ list, title }) {
+  const animationDelay = (list.length + 1) * 0.2 + list.length * 0.2;
   return (
     <Flex
-      className={mouseIn ? "start" : "enter"}
       sx={{
         width: "25%",
-
         position: "absolute",
         transition: "1s ease",
-        // transform: "translate(-50%, -50%)",
         justifyContent: "center",
         alignItems: "center",
         isolation: "isolate",
@@ -138,9 +139,9 @@ const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
           <Ringlet
             key={`${li + i}`}
             li={li}
-            i={i}
+            i={i + 1}
             list={list}
-            animationClass={""}
+            animationDelay={animationDelay}
           />
         );
       })}
@@ -152,22 +153,36 @@ const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
           width: "100%",
         }}
       >
-        <Text
+        <motion.div
           sx={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            fontSize: ["8px", "clamp(25px, 2vw,42px)"],
-            whiteSpace: "nowrap",
-            fontWeight: 900,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+            zIndex: 99,
           }}
+          initial={{ opacity: 0, translateY: 4 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{ type: "spring", duration: 3, delay: 0.95 }}
         >
-          {title}
-        </Text>
+          <Text
+            sx={{
+              textAlign: "center",
+              fontSize: ["8px", "clamp(25px, 2vw,42px)"],
+              whiteSpace: "nowrap",
 
-        <svg
+              fontWeight: 900,
+            }}
+          >
+            {title}
+          </Text>
+        </motion.div>
+        <motion.svg
+          initial={{ scale: 0.06, originX: "50%", originY: "50%" }}
+          transition={{ delay: 1, type: "spring", duration: 0.5 }}
+          animate={{ scale: 1 }}
           width="100%"
           height="100%"
           className="brand"
@@ -175,14 +190,13 @@ const RingSet = memo(function RingSetMemo({ list, title, mouseIn }) {
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx="50" cy="50" r="50" />
-        </svg>
+        </motion.svg>
       </Box>
     </Flex>
   );
 });
 
-const Ringlet = ({ li, i, list }) => {
-  // console.log("rerender ringlet " + i);
+const Ringlet = ({ li, i, list, animationDelay }) => {
   const getCircumference = (radius) => {
     return 2 * Math.PI * radius;
   };
@@ -195,7 +209,7 @@ const Ringlet = ({ li, i, list }) => {
   /** Generate a textPath to set inside a text svg element. Takes string, radius of ring, and fontSize
    * 1st get circumference
    * 2nd get max chars that text can occupy based on circumference length
-   * 3rd  get amount of times to multiply string
+   * 3rd get amount of times to multiply string
    * 4th padstart string to give space between repeated strings, repeat by `newChars`
    * return textpath with new string.
    */
@@ -207,7 +221,10 @@ const Ringlet = ({ li, i, list }) => {
     const newString = string.padStart(string.length + 1, " ").repeat(newChars);
 
     return `<textPath
-   
+
+    method=stretch
+   spacing=exact
+   textLength=155%
     xlink:href="#circle"
     >
     ${newString}
@@ -219,7 +236,10 @@ const Ringlet = ({ li, i, list }) => {
   // const scale = 2.25 + Math.pow(i, 1.2 + i * 0.025);
 
   return (
-    <Box
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", delay: (i + 1) * 0.2, duration: 0.2 }}
       sx={{
         "@keyframes rotation": {
           "0%": {
@@ -235,7 +255,7 @@ const Ringlet = ({ li, i, list }) => {
         position: "absolute",
         transition: "1s ease",
         animation: `rotation ${Math.max(20, 20 * i * 0.5)}s infinite`,
-        animationDelay: `${i * 1}s`,
+        animationDelay: `${animationDelay}s`,
         animationTimingFunction: "linear",
         zIndex: list.length - i,
         ":hover": {
@@ -268,8 +288,8 @@ const Ringlet = ({ li, i, list }) => {
         style={{
           pointerEvents: "none",
           position: "absolute",
-          height: `${120 * i}%`,
-          width: `${120 * i}%`,
+          height: `${120 * (i + 1)}%`,
+          width: `${120 * (i + 1)}%`,
           top: `${50}%`,
           left: `${50}%`,
           transform: "translate(-50%,-50%)",
@@ -307,10 +327,10 @@ const Ringlet = ({ li, i, list }) => {
           className="circle"
           fill="black"
           strokeWidth={`.1px`}
-          strokeDasharray={i % 2 === 0 ? "0" : ".3"}
+          strokeDasharray={(i + 1) % 2 === 0 ? "0" : ".3"}
           cx="50"
           cy="50"
-          r={`${25 * Math.pow(1.5, Math.pow(0.5, 0.3 * i))}`}
+          r={`${25 * Math.pow(1.5, Math.pow(0.5, 0.3 * (i + 1)))}`}
         />
 
         <text
@@ -322,7 +342,7 @@ const Ringlet = ({ li, i, list }) => {
           }}
         />
       </svg>
-    </Box>
+    </motion.div>
   );
 };
 
