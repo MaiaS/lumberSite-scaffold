@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { memo, useEffect, useRef } from "react";
+import { useMedia } from "react-use";
 import { Box, Flex } from "theme-ui";
 
 // eyelid
@@ -114,7 +115,7 @@ const EyeBall = ({ right, forwardRef }) => {
   const eyeWhiteRef = useRef();
   const pupilRef = useRef();
   const maskRef = useRef();
-
+  const query = useMedia("(any-hover: none)");
   // Rotating eyeball
   useEffect(() => {
     const followMe = (e) => {
@@ -147,8 +148,6 @@ const EyeBall = ({ right, forwardRef }) => {
       eyeWhiteRef.current.style.transform = `rotate(-${degree}deg)`;
       maskRef.current.style.transform = `rotate(${degree}deg)`;
     };
-
-    const query = window.matchMedia("(any-hover: none)").matches;
 
     // if mobile -> scroll, else mousemove
     if (query) {

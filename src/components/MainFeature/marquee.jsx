@@ -106,7 +106,7 @@ const MarqueeSlider = ({
           },
 
           ".marquee": {
-            animation: "slideOut 3s linear infinite",
+            animation: "slideOut 10s linear infinite",
             width: "100%",
             display: "flex",
             flexWrap: "nowrap",
@@ -172,13 +172,10 @@ const MarqueeContent = ({ content, li }) => {
               as="span"
               sx={{
                 width: "15%",
-                // position: "relative",
-                // px: "20px",
               }}
             >
               <ResponsiveImage
                 forwardSx={{
-                  // aspectRatio: "1",
                   width: "90%",
                   height: "90%",
                   borderRadius: ["12px", "24px"],
