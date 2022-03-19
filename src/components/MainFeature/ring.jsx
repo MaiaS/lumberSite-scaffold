@@ -164,7 +164,7 @@ const RingSet = memo(function RingSet({ list, title }) {
             alignItems: "center",
             height: "100%",
             width: "100%",
-            zIndex: 99,
+            zIndex: 3,
           }}
           initial={{ opacity: 0, translateY: 4 }}
           animate={{ opacity: 1, translateY: 0 }}

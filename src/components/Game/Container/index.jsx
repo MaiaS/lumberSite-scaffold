@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Box, Text, Flex } from "theme-ui";
+import { Box, Flex } from "theme-ui";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -18,15 +18,16 @@ const Container = () => {
       {startTransition && (
         <motion.div
           initial={{
-            scale: 0.5,
+            scale: 0.2,
             opacity: 0.5,
             translateY: -5,
             borderRadius: "50%",
           }}
           onAnimationComplete={() => setStartTransition(false)}
           animate={{
-            scale: 1.5,
+            scale: 1.8,
             opacity: 1,
+
             translateY: 0,
             borderRadius: 0,
           }}

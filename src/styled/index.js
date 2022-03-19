@@ -12,4 +12,5 @@ export const Progress = styled.div`
   );
   height: 1px;
   margin: 40px;
+  margin-right: 20px;
 `;

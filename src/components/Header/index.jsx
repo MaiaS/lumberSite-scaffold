@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Flex, Text } from "theme-ui";
+import { Box, Flex, Text } from "theme-ui";
 import { Progress } from "../../styled";
 
 const Header = () => {
@@ -31,13 +32,61 @@ const Header = () => {
         borderBottom: "1px solid black",
       }}
     >
-      <Text variant="logo" as="h1" sx={{ flexShrink: 0 }}>
-        Lumber
-      </Text>
+      <Link href={"/"}>
+        <Text variant="logo" as="h1" sx={{ flexShrink: 0, cursor: "pointer" }}>
+          Lumber
+        </Text>
+      </Link>
       <Progress scroll={offset} />
-      <Text variant="h6" as="h2" sx={{ flexShrink: 0 }}>
-        Build with us
-      </Text>
+      <Link href={"mailto:hello@lumber.dev"}>
+        <Flex
+          sx={{
+            "--transition": ".2s",
+            cursor: "pointer",
+            flexShrink: 0,
+            position: "relative",
+            alignItems: "center",
+            gap: "10px",
+            ":hover": {
+              ":before": {
+                transform: "scale(1)",
+              },
+              ".headerBall": {
+                transform: "scale(1)",
+                background: "brand",
+              },
+            },
+            ":before": {
+              content: '""',
+              width: "100%",
+              transition: "var(--transition) ease",
+              transform: "scaleX(0)",
+              right: "0",
+              height: "1px",
+              background: "black",
+              position: "absolute",
+              bottom: "0",
+            },
+          }}
+        >
+          <Box
+            className="headerBall"
+            sx={{
+              background: "black",
+              transform: "scale(.7)",
+              height: "20px",
+              width: "20px",
+              borderRadius: "50%",
+
+              transition: ".3s ease",
+              transitionDelay: "var(--transition)",
+            }}
+          ></Box>
+          <Text variant="h6" as="h2">
+            Build with us
+          </Text>
+        </Flex>
+      </Link>
     </Flex>
   );
 };

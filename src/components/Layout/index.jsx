@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Box, Container } from "theme-ui";
+import { Box, Container, Text, Flex } from "theme-ui";
 import Header from "../Header";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -23,6 +23,7 @@ const Layout = ({ children }) => {
           transition={{
             type: "spring",
             borderRadius: { delay: 0.3 },
+            delay: 1,
           }}
           sx={{
             height: "100vh",
@@ -48,8 +49,18 @@ const Layout = ({ children }) => {
             {children}
           </Box>
         </Container>
+        <Copyright />
       </div>
     </>
+  );
+};
+
+const Copyright = () => {
+  return (
+    <Flex sx={{ justifyContent: "space-between" }}>
+      <Text as="p">Made In Brooklyn</Text>
+      <Text as="p">© 2022 Lumber. All rights reserved</Text>
+    </Flex>
   );
 };
 
