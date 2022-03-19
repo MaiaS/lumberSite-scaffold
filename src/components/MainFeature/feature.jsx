@@ -33,7 +33,8 @@ const FeatureContent = ({ type, content }) => {
       );
 
     case "footerGame":
-      return <Footer />;
+      console.log(content);
+      return <Footer title={content.title} email={content.footerEmail} />;
 
     default:
       return null;

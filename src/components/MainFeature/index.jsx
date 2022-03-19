@@ -14,7 +14,7 @@ const MainFeature = ({ content }) => {
         color: "black",
         gridColumn: ["span 2", "auto"],
         gridRow: ["span 2", "auto"],
-        aspectRatio: ["1", "3/2"],
+        aspectRatio: ["2/3", "3/2"],
         overflow: "hidden",
         width: "100%",
         "@supports not (aspect-ratio: 1)": {

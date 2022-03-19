@@ -18,8 +18,6 @@ export default {
   },
   styles: {
     root: {
-      px: ["20px", "65px"],
-      pb: "62px",
       fontFamily: "heading",
     },
   },

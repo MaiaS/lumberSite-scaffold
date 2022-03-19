@@ -65,7 +65,7 @@ const RingFeature = ({ list, title }) => {
       passive: true,
     });
     return () =>
-      ringRef.current.removeEventListener("mousemove", handleMouseMove);
+      ringRef.current?.removeEventListener("mousemove", handleMouseMove);
   }, [ringRef, handleMouseMove, calculateRotate, mouseIn]);
 
   return (
@@ -122,7 +122,8 @@ const RingFeature = ({ list, title }) => {
 };
 
 const RingSet = memo(function RingSet({ list, title }) {
-  const animationDelay = (list.length + 1) * 0.2 + list.length * 0.2;
+  const [ringAnimation, setRingAnimation] = useState(false);
+  const animationDelay = 4.6;
   return (
     <Flex
       sx={{
@@ -141,6 +142,8 @@ const RingSet = memo(function RingSet({ list, title }) {
             li={li}
             i={i + 1}
             list={list}
+            setRingAnimation={i === list.length - 1 && setRingAnimation}
+            ringAnimation={ringAnimation}
             animationDelay={animationDelay}
           />
         );
@@ -237,9 +240,12 @@ const Ringlet = ({ li, i, list, animationDelay }) => {
 
   return (
     <motion.div
+      // onAnimationComplete={
+      //   setRingAnimation ? () => setRingAnimation(true) : null
+      // }
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", delay: (i + 1) * 0.2, duration: 0.2 }}
+      transition={{ type: "spring", delay: (i + 3) * 0.2, duration: 0.2 }}
       sx={{
         "@keyframes rotation": {
           "0%": {
@@ -288,8 +294,8 @@ const Ringlet = ({ li, i, list, animationDelay }) => {
         style={{
           pointerEvents: "none",
           position: "absolute",
-          height: `${120 * (i + 1)}%`,
-          width: `${120 * (i + 1)}%`,
+          height: `${130 * (i + 1)}%`,
+          width: `${130 * (i + 1)}%`,
           top: `${50}%`,
           left: `${50}%`,
           transform: "translate(-50%,-50%)",
@@ -330,7 +336,7 @@ const Ringlet = ({ li, i, list, animationDelay }) => {
           strokeDasharray={(i + 1) % 2 === 0 ? "0" : ".3"}
           cx="50"
           cy="50"
-          r={`${25 * Math.pow(1.5, Math.pow(0.5, 0.3 * (i + 1)))}`}
+          r={`${25 * Math.pow(1.6, Math.pow(0.5, 0.3 * (i + 1)))}`}
         />
 
         <text

@@ -1,5 +1,7 @@
 import dynamic from "next/dynamic";
 import { queryPage } from "lib/contentful/graphql/queries/queryPage";
+import Layout from "~/components/Layout";
+import GameStartProvider from "~/components/Context/GameStartContext";
 
 const MainFeature = dynamic(() => import("~/components/MainFeature"));
 const ThreeWayGrid = dynamic(() => import("~/components/ThreeWayGrid"));
@@ -12,7 +14,7 @@ export async function getStaticProps() {
   };
 }
 
-const Home = ({ content }) => {
+const Page = ({ content }) => {
   return (
     <>
       {content.map((c) => {
@@ -32,4 +34,11 @@ const Home = ({ content }) => {
   );
 };
 
-export default Home;
+Page.getLayout = function getLayout(page) {
+  return (
+    <GameStartProvider>
+      <Layout>{page}</Layout>
+    </GameStartProvider>
+  );
+};
+export default Page;
