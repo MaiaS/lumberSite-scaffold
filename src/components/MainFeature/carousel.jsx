@@ -222,8 +222,6 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
     Math.PI * (Startpoint + linearScale(index, 0, length, 0, 2));
   const thetaLength = Math.PI * (Startpoint - Startpoint * 0.1);
 
-  const radToDeg = (num) => (num * (180 / Math.PI)) % 360;
-
   useEffect(() => {
     return () => {
       // clean new elem
