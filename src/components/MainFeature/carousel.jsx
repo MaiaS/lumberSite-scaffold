@@ -193,6 +193,7 @@ const Cylinder = (props) => {
 const VideoSlice = ({ item, index, length, currentRotation }) => {
   const videoSrc = item.video?.url ?? null;
   const contentType = !!item.video?.url;
+
   const myref = useRef();
 
   const texture = useLoader(THREE.TextureLoader, item.image.url);
@@ -224,21 +225,6 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
   const radToDeg = (num) => (num * (180 / Math.PI)) % 360;
 
   useEffect(() => {
-    // if video, check if video is in view before playing
-    if (contentType) {
-      if (
-        currentRotation &&
-        radToDeg(currentRotation) >= radToDeg(thetaStart + thetaLength)
-        //   &&
-        // radToDeg(thetaStart + thetaLength) >= radToDeg(currentRotation)
-      ) {
-        if (!video?.paused) return;
-        video.play();
-      } else {
-        if (video?.paused) return;
-        video.pause();
-      }
-    }
     return () => {
       // clean new elem
       videoElemRef.current.remove();
@@ -249,7 +235,7 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
     <mesh scale={1}>
       <cylinderBufferGeometry
         ref={myref}
-        args={[3, 3, 2.5, 40, 2, true, thetaStart, thetaLength]}
+        args={[3, 3, 2.5, 6, 2, true, thetaStart, thetaLength]}
       />
       {contentType && (
         <meshLambertMaterial toneMapped={false} side={THREE.DoubleSide}>
