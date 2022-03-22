@@ -156,6 +156,7 @@ const Footer = ({ title, email }) => {
                 py: "16px",
                 px: "50px",
                 mx: "auto",
+                mb: "1rem",
                 maxWidth: "80%",
                 borderRadius: "25px",
                 background: "white",
