@@ -32,6 +32,7 @@ const SmallBlock = memo(function SmallBlock({ forwardSx, content = {} }) {
           initial={{ opacity: 0.3, scale: 0.3, borderRadius: "50%" }}
           sx={{
             width: "100%",
+            height: "100%",
             overflow: "hidden",
             backgroundColor: content?.mainColor ?? "white",
           }}
