@@ -54,7 +54,7 @@ const Footer = ({ title, email }) => {
               <Flex
                 key={`${g}-${i}`}
                 className={center ? "" : hover && "children"}
-                onClick={() => handleTransition(true)}
+                onClick={center ? () => handleTransition(true) : null}
                 onMouseEnter={center ? () => setHover(true) : null}
                 onMouseLeave={center ? () => setHover(false) : null}
                 sx={{
@@ -101,7 +101,7 @@ const Footer = ({ title, email }) => {
               <Flex
                 key={`${g}-${i}`}
                 className={center ? "" : hover && "children"}
-                onClick={() => handleTransition(true)}
+                onClick={center ? () => handleTransition(true) : null}
                 onMouseEnter={center ? () => setHover(true) : null}
                 onMouseLeave={center ? () => setHover(false) : null}
                 sx={{

@@ -171,8 +171,24 @@ const EyeBall = ({ right, forwardRef }) => {
         borderRadius: "50%",
         backgroundColor: "black",
         position: "relative",
+        isolation: "isolate",
       }}
     >
+      <Box
+        ref={pupilRef}
+        sx={{
+          height: "25%",
+          width: "25%",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -100%) translate3d(0,0,0)",
+          position: "absolute",
+          borderRadius: "50%",
+          transformOrigin: "0 0",
+          backgroundColor: "black",
+          zIndex: 9,
+        }}
+      ></Box>
       <Box
         ref={maskRef}
         sx={{
@@ -191,27 +207,13 @@ const EyeBall = ({ right, forwardRef }) => {
             width: "100%",
             top: "0%",
             left: "0%",
-
+            zIndex: -1,
             position: "absolute",
           }}
         >
           <EyeLid />
         </Box>
       </Box>
-      <Box
-        ref={pupilRef}
-        sx={{
-          height: "25%",
-          width: "25%",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -100%)",
-          position: "absolute",
-          borderRadius: "50%",
-          transformOrigin: "0 0",
-          backgroundColor: "black",
-        }}
-      ></Box>
     </Box>
   );
 };

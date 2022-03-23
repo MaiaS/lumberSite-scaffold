@@ -4,21 +4,21 @@ import CircleGrid from "./circleGrid";
 import Clock from "./clock";
 import Eyes from "./eyes";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import TextImage from "./TextImage";
 
-const SmallBlock = memo(function SmallBlock({
-  forwardSx,
-  classType,
-  content = {},
-}) {
+import { motion } from "framer-motion";
+
+const SmallBlock = memo(function SmallBlock({ forwardSx, content = {} }) {
   const { type } = content;
+  const [display, setDisplay] = useState(false);
 
   return (
-    <Box
-      className={classType}
+    <motion.div
+      initial={true}
+      onViewportEnter={() => setDisplay(true)}
+      onViewportLeave={() => setDisplay(false)}
       sx={{
-        backgroundColor: content?.mainColor ?? "white",
         aspectRatio: "1",
         "@supports not (aspect-ratio:1)": {
           height: [0, "auto"],
@@ -27,22 +27,36 @@ const SmallBlock = memo(function SmallBlock({
         ...forwardSx,
       }}
     >
-      <Box sx={{ height: "100%", width: "100%", aspectRatio: "1" }}>
-        {type === "clock" && <Clock content={content} />}
+      {display && (
+        <motion.div
+          initial={{ opacity: 0.3, scale: 0.3, borderRadius: "50%" }}
+          sx={{
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
+            backgroundColor: content?.mainColor ?? "white",
+          }}
+          animate={{ opacity: 1, scale: 1, borderRadius: 0 }}
+          transition={{ borderRadius: { delay: 0.2 } }}
+        >
+          <Box sx={{ height: "100%", width: "100%", aspectRatio: "1" }}>
+            {type === "clock" && <Clock content={content} />}
 
-        {type === "text_image" && <TextImage content={content} />}
+            {type === "text_image" && <TextImage content={content} />}
 
-        {type === "eyes" && <Eyes />}
+            {type === "eyes" && <Eyes />}
 
-        {type === "circle_grid_bfs" && <CircleGrid type="bfs" />}
+            {type === "circle_grid_bfs" && <CircleGrid type="bfs" />}
 
-        {type === "circle_grid_rain" && <CircleGrid type="rain" />}
+            {type === "circle_grid_rain" && <CircleGrid type="rain" />}
 
-        {type === "circle_grid_paint" && <CircleGrid type="paint" />}
+            {type === "circle_grid_paint" && <CircleGrid type="paint" />}
 
-        {type === "circle_grid_grow" && <CircleGrid type="grow" />}
-      </Box>
-    </Box>
+            {type === "circle_grid_grow" && <CircleGrid type="grow" />}
+          </Box>
+        </motion.div>
+      )}
+    </motion.div>
   );
 });
 

@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { Box, Grid } from "theme-ui";
+import { motion } from "framer-motion";
+import { useMedia } from "react-use";
 
 const CircleGrid = ({ type }) => {
   const [gridArray, setGridArray] = useState(
@@ -40,7 +42,7 @@ const CircleGrid = ({ type }) => {
       BFSFlip(i + 1, j, bool);
       BFSFlip(i, j - 1, bool);
       BFSFlip(i, j + 1, bool);
-    });
+    }, 1000);
   };
 
   const paintFlip = (i, j, bool) => {
@@ -149,86 +151,100 @@ const Circle = ({
 }) => {
   const circleRef = useRef();
 
-  const [scale] = useState(0.8);
+  const mobile = useMedia("(any-hover: none)");
+
+  const [selected, setSelected] = useState(false);
 
   // fix with springs.
 
   const handleFlip = () => {
+    setSelected(true);
     handleFlipEnter(i, j, paint ? !flip : true);
   };
   const handleLeave = () => {
-    if (handleFlipLeave) handleFlipLeave(i, j, false);
+    setSelected(false);
+    if (handleFlipLeave) handleFlipLeave(i, j, !flip);
+  };
+
+  const variants = {
+    open: { scale: 1 },
+    closed: { scale: 0.7 },
+    selected: { scale: 0.3 },
   };
 
   return (
     <Box
-      ref={circleRef}
       onMouseEnter={handleFlip}
       onMouseLeave={handleLeave}
-      onTouchStart={handleFlip}
-      onTouchEnd={handleLeave}
       sx={{
         height: "100%",
         width: "100%",
-        perspective: "1000px",
-        overflow: "hidden",
-        position: "relative",
-        transformStyle: "preserve-3d",
-        ":hover": {
-          ".back, .front": {
-            transform: grow && `scale(.3)`,
-          },
-        },
       }}
     >
-      <Box
-        className="back"
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%",
-          transform: !grow
-            ? flip
-              ? "rotate(-80deg)"
-              : "rotateY(180deg)"
-            : flip
-            ? `scale(${scale})`
-            : "scale(1)",
-          backgroundColor: "brand",
-          borderRadius: "50%",
-          transition: grow ? ".5s cubic-bezier(.17,.67,0,1.06)" : ".5s ease",
-          // transitionDelay: `${i + j}s`,
-          backfaceVisibility: "hidden",
-          transformStyle: "preserve-3d",
+      <motion.div
+        onDragEnter={handleFlip}
+        onTouchEnd={handleLeave}
+        inital={true}
+        animate={grow && (selected ? "selected" : flip ? "closed" : "open")}
+        variants={variants}
+        // animate={{ scale: 0.7 }}
+        style={{ height: "100%", width: "100%" }}
+        transition={{
+          type: mobile ? "tween" : "spring",
+          duration: mobile ? 0.5 : "none",
         }}
-      />
+      >
+        <Box
+          ref={circleRef}
+          sx={{
+            height: "100%",
+            width: "100%",
+            perspective: "1000px",
+            overflow: "hidden",
+            position: "relative",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          <Box
+            className="back"
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              height: "100%",
+              width: "100%",
+              transform: !grow && flip ? "rotate(-80deg)" : "rotateY(180deg)",
 
-      <Box
-        className="front"
-        sx={{
-          position: "absolute",
+              transition: ".5s ease",
+              backgroundColor: "brand",
+              borderRadius: "50%",
 
-          top: 0,
-          left: 0,
-          height: "100%",
-          width: "100%",
-          transform: !grow
-            ? flip
-              ? "rotateY(180deg)"
-              : "rotate(-80deg)"
-            : flip
-            ? `scale(${scale})`
-            : "scale(1)",
-          transition: grow ? ".5s cubic-bezier(.17,.67,0,1.06)" : ".5s ease",
-          // transitionDelay: `${i + j}s`,
-          backgroundColor: "black",
-          borderRadius: "50%",
-          backfaceVisibility: "hidden",
-          transformStyle: "preserve-3d",
-        }}
-      />
+              backfaceVisibility: "hidden",
+              transformStyle: "preserve-3d",
+            }}
+          />
+
+          <Box
+            className="front"
+            sx={{
+              position: "absolute",
+
+              top: 0,
+              left: 0,
+              height: "100%",
+              width: "100%",
+              transform: !grow && flip ? "rotateY(180deg)" : "rotate(-80deg)",
+
+              transition: ".5s ease",
+
+              backgroundColor: "black",
+              borderRadius: "50%",
+              backfaceVisibility: "hidden",
+              transformStyle: "preserve-3d",
+            }}
+          />
+        </Box>
+      </motion.div>
     </Box>
   );
 };
