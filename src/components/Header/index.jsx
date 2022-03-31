@@ -37,7 +37,7 @@ const Header = () => {
           Lumber
         </Text>
       </Link>
-      <Progress scroll={offset} />
+      <Progress scroll={offset} sx={{ display: ["none", "initial"] }} />
       <Link href={"mailto:hello@lumber.dev"}>
         <Flex
           sx={{
@@ -60,7 +60,7 @@ const Header = () => {
               content: '""',
               width: "100%",
               transition: "var(--transition) ease",
-              transform: "scaleX(0)",
+              transform: ["scaleX(1)", "scale(0)"],
               right: "0",
               height: "1px",
               background: "black",
@@ -72,6 +72,7 @@ const Header = () => {
           <Box
             className="headerBall"
             sx={{
+              display: ["none", "initial"],
               background: "black",
               transform: "scale(.7)",
               height: "20px",
@@ -83,7 +84,7 @@ const Header = () => {
             }}
           ></Box>
           <Text variant="h6" as="h2">
-            Build with us
+            Build something with us
           </Text>
         </Flex>
       </Link>

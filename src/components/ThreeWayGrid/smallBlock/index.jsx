@@ -29,15 +29,12 @@ const SmallBlock = memo(function SmallBlock({ forwardSx, content = {} }) {
     >
       {display && (
         <motion.div
-          initial={{ opacity: 0.3, scale: 0.3, borderRadius: "50%" }}
           sx={{
             width: "100%",
             height: "100%",
             overflow: "hidden",
             backgroundColor: content?.mainColor ?? "white",
           }}
-          animate={{ opacity: 1, scale: 1, borderRadius: 0 }}
-          transition={{ borderRadius: { delay: 0.2 } }}
         >
           <Box sx={{ height: "100%", width: "100%", aspectRatio: "1" }}>
             {type === "clock" && <Clock content={content} />}

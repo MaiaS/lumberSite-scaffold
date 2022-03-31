@@ -8,7 +8,6 @@ export default {
     white: "#FFF",
   },
   fonts: {
-    light: "Messina Serif Light, system-ui, sans-serif",
     body: "Messina Sans, system-ui, sans-serif",
     heading: "Messina Sans, system-ui, sans-serif",
   },
@@ -24,6 +23,7 @@ export default {
   text: {
     body: {
       fontFamily: "body",
+      fontWeight: "body",
     },
     logo: {
       fontFamily: "heading",
