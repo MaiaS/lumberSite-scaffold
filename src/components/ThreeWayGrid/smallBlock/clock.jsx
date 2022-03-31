@@ -108,8 +108,9 @@ const Clock = memo(function MemoClock({ content }) {
           variant="logo"
           sx={{
             mt: "1rem",
-            fontSize: "clamp(20px, 3vw, 72px)",
-            lineHeight: "clamp(20px, 3vw, 72px)",
+            whiteSpace: "nowrap",
+            fontSize: ["clamp(40px, 3vw, 82px)", "30px", "42px"],
+            lineHeight: "clamp(40px, 3vw, 82px)",
           }}
         >
           {content?.title}
@@ -117,8 +118,8 @@ const Clock = memo(function MemoClock({ content }) {
         <Text
           as="p"
           sx={{
-            fontSize: "clamp(8px, 2vw, 52px)",
-            lineHeight: "clamp(8px, 2vw, 52px)",
+            fontSize: ["16px", "12px", "16px"],
+            lineHeight: ["16px", "12px", "16px"],
           }}
         >
           {content?.subtitle}

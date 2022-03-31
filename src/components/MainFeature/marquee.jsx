@@ -82,7 +82,7 @@ const MarqueeSlider = ({
           borderTop: "1px solid white",
           height: [`${90 / listLength}%`, `${90 / listLength}%`],
           width: "100%",
-          fontSize: [`${height * 0.4}px`, `${height * 0.8}px`],
+          fontSize: [`${height * 0.5}px`, `${height * 0.8}px`],
 
           webkitTextFillColor: "none",
           filter: "grayscale(100)",
@@ -158,32 +158,30 @@ const MarqueeContent = ({ content, li }) => {
     >
       {[...Array(number)].map((e, i) => (
         <Fragment key={`${e}-${i}`}>
-          <Text
+          <Flex
             as="span"
             sx={{
+              width: "100%",
+              alignItems: "center",
+              flexShrink: 1,
+              justifyContent: "center",
               textShadow:
                 "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
             }}
           >
-            {content.__typename === "Client" ? content.title : li}
-          </Text>
+            <Text>{content.__typename === "Client" ? content.title : li}</Text>
+          </Flex>
           {content.__typename === "Client" && (
-            <Box
-              as="span"
-              sx={{
-                width: "15%",
+            <ResponsiveImage
+              forwardSx={{
+                flexShrink: 0,
+
+                width: "10%",
+                borderRadius: ["12px", "24px"],
+                overflow: "hidden",
               }}
-            >
-              <ResponsiveImage
-                forwardSx={{
-                  width: "90%",
-                  height: "90%",
-                  borderRadius: ["12px", "24px"],
-                  overflow: "hidden",
-                }}
-                image={content.image}
-              />
-            </Box>
+              image={content.image}
+            />
           )}
         </Fragment>
       ))}

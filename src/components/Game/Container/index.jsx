@@ -3,8 +3,9 @@ import { Box, Flex } from "theme-ui";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const Container = () => {
+const Container = ({ children }) => {
   const [startTransition, setStartTransition] = useState(true);
+  const [ready, setReady] = useState(false);
 
   return (
     <Box
@@ -90,6 +91,7 @@ const Container = () => {
                   Score: 0
                 </motion.div>
                 <motion.div
+                  onAnimationComplete={() => setReady(true)}
                   initial={{ translateY: -5, opacity: 0 }}
                   animate={{ translateY: 0, opacity: 1 }}
                   transition={{ delay: 0.7 }}
@@ -101,6 +103,16 @@ const Container = () => {
           </motion.div>
         </>
       )}
+      <Flex
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100%",
+          flexDirection: "column",
+        }}
+      >
+        {ready && children}
+      </Flex>
     </Box>
   );
 };

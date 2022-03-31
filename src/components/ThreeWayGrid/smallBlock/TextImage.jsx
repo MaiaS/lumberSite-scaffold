@@ -12,8 +12,8 @@ const TextImage = ({ content }) => {
         color: content.secondaryColor ?? "black",
         height: "100%",
         p: "10%",
-        fontSize: "clamp(30px, 3vw, 50px)",
-        lineHeight: "clamp(30px, 3vw, 50px)",
+        fontSize: ["clamp(30px, 10vw, 70px)", "clamp(30px, 4vw, 60px)"],
+        lineHeight: ["clamp(30px, 10vw, 70px)", "clamp(30px, 4vw, 60px)"],
       }}
     >
       <Box
