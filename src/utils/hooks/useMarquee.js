@@ -13,7 +13,6 @@ const useMarquee = ({ containerRef, initialElemRef, type }) => {
     const duplicateNum = Math.ceil(
       Math.ceil(containerBound.width / 2) / elemBound.width
     );
-    console.log(duplicateNum);
     return duplicateNum;
   };
 
@@ -26,8 +25,6 @@ const useMarquee = ({ containerRef, initialElemRef, type }) => {
     const duplicateNum = Math.ceil(
       Math.ceil(containerBound.width / 2) / elemBound.height
     );
-    console.log(duplicateNum);
-
     return duplicateNum;
   };
 

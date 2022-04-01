@@ -1,19 +1,19 @@
 /** @jsxImportSource theme-ui */
 import Link from "next/link";
-import { useState, useContext } from "react";
-import { Box, Grid, Flex, Text, Button } from "theme-ui";
-import { GameStartContext } from "../Context/GameStartContext";
+// import { useContext } from "react";
+import { Box, Flex, Text, Button } from "theme-ui";
+// import { GameStartContext } from "../Context/GameStartContext";
 
 const Footer = ({ title, email }) => {
-  const gridArray = Array(69).fill(0);
-  const gridArrayMobile = Array(17).fill(0);
-  const [start, setStart] = useState(false);
-  const [hover, setHover] = useState(false);
-  const { setStartGamePage } = useContext(GameStartContext);
-  const handleTransition = () => {
-    setStart(true);
-    setStartGamePage(true);
-  };
+  // const gridArray = Array(69).fill(0);
+  // const gridArrayMobile = Array(17).fill(0);
+  // const [ start ,setStart] = useState(false);
+  // const [hover, setHover] = useState(false);
+  // const { setStartGamePage } = useContext(GameStartContext);
+  // const handleTransition = () => {
+  //   setStart(true);
+  //   setStartGamePage(true);
+  // };
 
   return (
     <Box
@@ -34,7 +34,8 @@ const Footer = ({ title, email }) => {
           },
         }}
       >
-        <Grid
+        {/* TODO: Make game and turn this back on. */}
+        {/* <Grid
           sx={{
             display: ["grid", "none"],
             justifyContent: "center",
@@ -56,7 +57,7 @@ const Footer = ({ title, email }) => {
               <Flex
                 key={`${g}-${i}`}
                 className={center ? "" : hover && "children"}
-                onClick={() => handleTransition(true)}
+                onClick={center ? () => handleTransition(true) : null}
                 onMouseEnter={center ? () => setHover(true) : null}
                 onMouseLeave={center ? () => setHover(false) : null}
                 sx={{
@@ -115,7 +116,7 @@ const Footer = ({ title, email }) => {
               <Flex
                 key={`${g}-${i}`}
                 className={center ? "" : hover && "children"}
-                onClick={() => handleTransition(true)}
+                onClick={center ? () => handleTransition(true) : null}
                 onMouseEnter={center ? () => setHover(true) : null}
                 onMouseLeave={center ? () => setHover(false) : null}
                 sx={{
@@ -153,7 +154,7 @@ const Footer = ({ title, email }) => {
               </Flex>
             );
           })}
-        </Grid>
+        </Grid> */}
         <Flex
           sx={{
             justifyContent: "center",
@@ -182,6 +183,7 @@ const Footer = ({ title, email }) => {
                 py: "16px",
                 px: "50px",
                 mx: "auto",
+                mb: "1rem",
                 maxWidth: "80%",
                 borderRadius: "25px",
                 background: "white",

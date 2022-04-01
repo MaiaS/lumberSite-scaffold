@@ -3,8 +3,9 @@ import { Box, Container, Flex, Text } from "theme-ui";
 import ResponsiveImage from "../Generic/ResponsiveImage";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMedia } from "react-use";
-import ArrowBack from "/public/assets/images/arrow-back.svg";
+import ArrowBack from "/public/assets/icons/arrow-back.svg";
 import { useState } from "react";
+import Close from "/public/assets/icons/close.svg";
 
 const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
   const mainImage = content?.mainImage ?? content?.client?.image;
@@ -110,6 +111,10 @@ const Unactivated = ({ mainImage, content, handleActivate }) => {
 };
 
 const Activated = ({ content, close }) => {
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+  };
+
   const [page, setPage] = useState(0);
   const [xAnim, setxAnim] = useState(50);
 
@@ -117,16 +122,19 @@ const Activated = ({ content, close }) => {
 
   const handleDragDirection = (i) => {
     const offset = i.offset.x;
-    if (offset < 30) {
-      setxAnim(-100);
+    const velocity = i.velocity.x;
+    const swipe = swipePower(offset, velocity);
+
+    if (swipe < -60) {
+      setxAnim(-50);
       if (page >= list.length - 1) {
         close();
         return;
       }
       setPage(page + 1);
     }
-    if (offset > 30) {
-      setxAnim(100);
+    if (swipe > 60) {
+      setxAnim(50);
       if (page <= 0) {
         close();
         return;
@@ -165,6 +173,27 @@ const Activated = ({ content, close }) => {
           (page < list.length && page > -1 && list[page]?.color) ?? "black",
       }}
     >
+      <motion.div
+        initial={{ scale: 1 }}
+        whileHover={{ scale: 1.3 }}
+        onClick={close}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "rgba(255,255,255,.3)",
+          height: "50px",
+          width: "50px",
+          position: "absolute",
+          top: 0,
+          right: 0,
+          borderRadius: "50%",
+          m: ["10px", "30px"],
+          zIndex: 5,
+        }}
+      >
+        <Close />
+      </motion.div>
       {!mobile && <Arrow handleClick={() => handleClick(false)} next />}
       {!mobile && <Arrow handleClick={() => handleClick(true)} />}
 
@@ -220,7 +249,7 @@ const Arrow = ({ handleClick, next }) => {
         right: !next && 0,
         height: "100%",
         position: "absolute",
-        p: "70px",
+        p: "30px",
         zIndex: 1,
         display: "flex",
         justifyContent: "end",
@@ -232,7 +261,7 @@ const Arrow = ({ handleClick, next }) => {
         whileHover={{ scale: 1.3, translateX: next ? -10 : 10 }}
         sx={{
           borderRadius: "50%",
-          background: "white",
+          background: "rgba(255,255,255,.3)",
           height: "60px",
           width: "60px",
           display: "flex",

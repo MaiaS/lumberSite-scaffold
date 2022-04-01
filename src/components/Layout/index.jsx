@@ -57,9 +57,11 @@ const Layout = ({ children }) => {
 
 const Copyright = () => {
   return (
-    <Flex sx={{ justifyContent: "space-between" }}>
+    <Flex sx={{ justifyContent: ["end", "space-between"] }}>
       <Text as="p">Made In Brooklyn</Text>
-      <Text as="p">© 2022 Lumber. All rights reserved</Text>
+      <Text as="p" sx={{ display: ["none", "initial"] }}>
+        © 2022 Lumber. All rights reserved
+      </Text>
     </Flex>
   );
 };

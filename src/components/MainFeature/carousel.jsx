@@ -49,7 +49,7 @@ const CarouselFeature = ({ title, description, list }) => {
           }}
         >
           <Box>
-            <Text as="h2" mb="14px">
+            <Text as="h2" mb={["16px", "14px"]}>
               {title}
             </Text>
             <Flex
@@ -58,28 +58,17 @@ const CarouselFeature = ({ title, description, list }) => {
                 flexWrap: "wrap",
                 alignItems: "center",
                 color: "black",
-                fontSize: ["40px", "86px"],
-                lineHeight: ["40px", "86px"],
+                fontSize: ["50px", "86px"],
+                lineHeight: ["50px", "86px"],
                 textShadow:
                   "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;",
               }}
             >
               <Text>We are</Text>
-              <Box
-                sx={{
-                  background: "brand",
-                  height: "50px",
-                  width: "50px",
-                  display: "inline-block",
-                  borderRadius: "50%",
-                  mx: "10px",
-                  position: "relative",
-                  animate: "3s flash infinite",
-                }}
-              >
+              <Flex sx={{ alignItems: "center" }}>
                 <Box
-                  className={start ? "small" : ""}
                   sx={{
+
                     position: "absolute",
                     paddingBottom: "10000%",
                     width: "10000%",
@@ -90,12 +79,37 @@ const CarouselFeature = ({ title, description, list }) => {
                     left: "50%",
                     transform: "scale(1) translate(-50%, -50%)",
                     transformOrigin: "center",
+
                     background: "brand",
-                    transition: "1s ease",
+                    height: ["37px", "50px"],
+                    width: ["37px", "50px"],
+                    display: "inline-block",
+                    borderRadius: "50%",
+                    mx: "10px",
+                    position: "relative",
+                    animate: "3s flash infinite",
                   }}
-                ></Box>
-              </Box>
-              <Text color="white">Lumber</Text>
+                >
+                  <Box
+                    className={start ? "small" : ""}
+                    sx={{
+                      aspectRatio: "1",
+                      position: "absolute",
+
+                      width: "10000%",
+                      zIndex: 2,
+                      borderRadius: "50%",
+                      top: "50%",
+                      left: "50%",
+                      transform: "scale(1) translate(-50%, -50%)",
+                      transformOrigin: "center",
+                      background: "brand",
+                      transition: "1s ease",
+                    }}
+                  ></Box>
+                </Box>
+                <Text color="white">Lumber</Text>
+              </Flex>
             </Flex>
           </Box>
 
@@ -104,9 +118,11 @@ const CarouselFeature = ({ title, description, list }) => {
               variant="body"
               sx={{
                 lineHeight: ["auto", "36px"],
-                fontSize: ["16px", "32px"],
+                fontSize: ["22px", "32px"],
                 position: "absolute",
-                bottom: ["10%", 0],
+                br: { display: ["none", "block"] },
+                bottom: 0,
+                strong: { fontWeight: 900 },
                 ":after": {
                   background: "black",
                 },
@@ -163,7 +179,7 @@ const Cylinder = (props) => {
   const rotateZ = useTransform(y, (value) => value / 4);
   useFrame(
     () => (
-      (myref.current.rotation.y += 0.01), setRotation(myref.current.rotation.y)
+      (myref.current.rotation.y += 0.005), setRotation(myref.current.rotation.y)
     )
   );
   return (
@@ -209,13 +225,20 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
     vid.crossOrigin = "Anonymous";
     vid.muted = true;
     vid.loop = true;
-    vid.autoplay = true;
+    // vid.autoplay = true;
     vid.playsInline = true;
     vid.load();
-    vid.pause();
+    vid.play();
     vid.currentTime = 1;
     return vid;
   });
+
+  // useEffect(() => {
+  //   console.log(video);
+  //   if (!video) {
+  //     alert("no Video!");
+  //   }
+  // }, [video]);
 
   // scale the index by its length between min 0 and max 2 to get the offset for next slice
   const Startpoint = 2 / length;
