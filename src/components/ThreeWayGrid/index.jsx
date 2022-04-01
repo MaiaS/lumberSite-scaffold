@@ -11,14 +11,12 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
     <>
       <Flex
         sx={{
-          ".active": {
-            pb: "100%",
-          },
           display: ["none", "flex"],
           flexDirection: !position && "row-reverse",
           gridAutoRows: "",
           backgroundColor: "black",
-          minHeight: "100%",
+
+          position: "relative",
           width: "100%",
           gridGap: "1px",
         }}
@@ -32,7 +30,6 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
               background: "black",
               flexDirection: "column",
               gap: "1px",
-              aspectRatio: "1",
             }}
           >
             {smallCollection.map((box) => (
@@ -47,7 +44,7 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
         <LargeBlock
           forwardSx={{
             width: active ? "100%" : "65%",
-            aspectRatio: "3/2",
+            pb: active ? "70%" : 0,
           }}
           active={active}
           handleActivate={() => setActive(!active)}
@@ -62,9 +59,10 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
         active={active}
         forwardSx={{
           display: ["block", "none"],
-          height: "100%",
+          position: "relative",
+          height: 0,
+          pb: "130%",
           width: "100%",
-          aspectRatio: "2/3",
           gridColumn: ["span 2"],
           gridRow: ["span 2"],
         }}
@@ -76,7 +74,8 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
           content={box}
           forwardSx={{
             width: "100%",
-            height: "100%",
+            height: 0,
+            pb: "100%",
             gridColumn: ["span 2"],
             gridRow: ["span 2"],
             display: ["block", "none"],

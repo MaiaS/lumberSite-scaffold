@@ -53,6 +53,7 @@ const Clock = memo(function MemoClock({ content }) {
   const secondAnim = keyframes`
   0% {
     transform: translate(-50%, -50%) rotate(${secStart}deg);
+
   },
   100% {
     transform: translate(-50%, -50%) rotate(${secStart + 360}deg);
@@ -63,18 +64,22 @@ const Clock = memo(function MemoClock({ content }) {
       sx={{
         ".hours": {
           animation: `86400s linear  infinite ${hourAnim}`,
+          animationDelay: ".5s",
           transform: `translate(-50%, -50%) rotate(${
             linearScale(hours % 12, 0, 12, 0, 360) + 45
           }deg)`,
         },
         ".minutes": {
           animation: ` 3600s linear  infinite ${minuteAnim}`,
+          animationDelay: ".5s",
           transform: `translate(-50%, -50%) rotate(${
             linearScale(minutes, 0, 60, 0, 360) + 45
           }deg)`,
         },
         ".seconds": {
           animation: `60s linear infinite ${secondAnim}`,
+          animationDelay: ".5s",
+
           transform: `translate(-50%, -50%) rotate(${
             linearScale(30, 0, 60, 0, 360) + 45
           }deg)`,
@@ -127,11 +132,22 @@ const Clock = memo(function MemoClock({ content }) {
       {typeof seconds === "number" &&
         typeof minutes === "number" &&
         typeof hours === "number" && (
-          <Box>
-            <Seconds mainColor={content?.mainColor} />
-            <Minutes mainColor={content?.mainColor} />
-            <Hours mainColor={content?.mainColor} />
-          </Box>
+          <>
+            <div
+              sx={{
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                height: "100%",
+                width: "100%",
+                position: "absolute",
+              }}
+            >
+              <Seconds mainColor={content?.mainColor} />
+              <Minutes mainColor={content?.mainColor} />
+              <Hours mainColor={content?.mainColor} />
+            </div>
+          </>
         )}
 
       <>
@@ -178,6 +194,7 @@ const Seconds = ({ mainColor }) => {
         width="100%"
         viewBox="50 50 100 100"
         style={{
+          position: "absolute",
           position: "absolute",
           zIndex: 1,
           top: "50%",

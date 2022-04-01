@@ -14,16 +14,22 @@ const MainFeature = ({ content }) => {
         color: "black",
         gridColumn: ["span 2", "auto"],
         gridRow: ["span 2", "auto"],
-        aspectRatio: ["2/3", "3/2"],
+
         overflow: "hidden",
         width: "100%",
-        "@supports not (aspect-ratio: 1)": {
-          height: ["0"],
-          pb: ["100%", "80%"],
-        },
+
+        height: ["0"],
+        pb: ["130%", "70%"],
+        position: "relative",
       }}
     >
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+        }}
+      >
         <FeatureContent type={content.type} content={content} />
       </Box>
       {/* only render if marquee is true */}

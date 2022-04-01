@@ -167,7 +167,8 @@ const EyeBall = ({ right, forwardRef }) => {
       sx={{
         height: "20%",
         overflow: "hidden",
-        aspectRatio: "1",
+        width: "20%",
+
         borderRadius: "50%",
         backgroundColor: "black",
         position: "relative",
@@ -192,6 +193,7 @@ const EyeBall = ({ right, forwardRef }) => {
             top: "0%",
             left: "0%",
 
+            zIndex: 0,
             position: "absolute",
           }}
         >
@@ -205,7 +207,9 @@ const EyeBall = ({ right, forwardRef }) => {
           width: "25%",
           top: "50%",
           left: "50%",
-          transform: "translate(-50%, -100%)",
+          transform: "translate(-50%, -100%) translate3d(0,0,10px)",
+          zIndex: 1,
+
           position: "absolute",
           borderRadius: "50%",
           transformOrigin: "0 0",

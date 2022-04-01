@@ -152,7 +152,6 @@ const RingSet = memo(function RingSet({ list, title }) {
       <Box
         sx={{
           zIndex: 100,
-          aspectRatio: "1",
           width: "100%",
         }}
       >
@@ -255,9 +254,9 @@ const Ringlet = ({ li, i, list, animationDelay }) => {
             transform: "rotate(0deg)",
           },
         },
-
-        aspectRatio: "1",
+        height: 0,
         width: "100%",
+        pb: "100%",
         position: "absolute",
         transition: "1s ease",
         animation: `rotation ${Math.max(20, 20 * i * 0.5)}s infinite`,

@@ -39,13 +39,15 @@ const Footer = ({ title, email }) => {
             display: ["grid", "none"],
             justifyContent: "center",
             alignContent: "center",
-            aspectRatio: "1",
             gridTemplateColumns: "repeat(5, 16%)",
             gridTemplateRows: "repeat(5, 16%)",
             gap: 0,
+
             gridAutoFlow: "dense",
-            width: "70%",
             minHeight: "70%",
+
+            height: 0,
+            width: "100%",
           }}
         >
           {gridArrayMobile.map((g, i) => {
@@ -60,12 +62,13 @@ const Footer = ({ title, email }) => {
                 sx={{
                   cursor: center && "pointer",
                   m: center && "10%",
-                  height: center ? "80%" : "100%",
+                  height: 0,
+                  pb: center ? "80%" : "100%",
                   width: center ? "80%" : "100%",
                   transform: center ? "rotate(-0deg)" : start && "scale(20)",
                   gridRow: center && "span 3",
                   gridColumn: center && "span 3",
-                  aspectRatio: "1",
+
                   background: center ? "brand" : "black",
                   borderRadius: "50%",
                   justifyContent: "center",
@@ -77,7 +80,18 @@ const Footer = ({ title, email }) => {
                   },
                 }}
               >
-                {center && <Text sx={{ fontSize: "30px" }}>Play</Text>}
+                {center && (
+                  <Text
+                    sx={{
+                      fontSize: "30px",
+                      top: "50%",
+                      position: "absolute",
+                      transform: "translate(0,-50%)",
+                    }}
+                  >
+                    Play
+                  </Text>
+                )}
               </Flex>
             );
           })}
@@ -107,12 +121,13 @@ const Footer = ({ title, email }) => {
                 sx={{
                   cursor: center && "pointer",
                   m: center && "5%",
-                  height: center ? "90%" : "100%",
+                  height: "0",
+                  pb: center ? "90%" : "100%",
                   width: center ? "90%" : "100%",
                   transform: center ? "rotate(-0deg)" : start && "scale(10)",
                   gridRow: center && "span 2",
                   gridColumn: center && "span 2",
-                  aspectRatio: "1",
+                  position: "relative",
                   background: center ? "brand" : "black",
                   borderRadius: "50%",
                   justifyContent: "center",
@@ -123,7 +138,18 @@ const Footer = ({ title, email }) => {
                   },
                 }}
               >
-                {center && <Text sx={{ fontSize: "30px" }}>Play</Text>}
+                {center && (
+                  <Text
+                    sx={{
+                      fontSize: "30px",
+                      top: "50%",
+                      position: "absolute",
+                      transform: "translate(0,-50%)",
+                    }}
+                  >
+                    Play
+                  </Text>
+                )}
               </Flex>
             );
           })}

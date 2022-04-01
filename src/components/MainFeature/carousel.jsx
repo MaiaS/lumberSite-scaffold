@@ -35,6 +35,7 @@ const CarouselFeature = ({ title, description, list }) => {
           backgroundColor: "black",
           color: "white",
           ".small": {
+            paddingBottom: "100%",
             width: "100%",
           },
         }}
@@ -79,10 +80,10 @@ const CarouselFeature = ({ title, description, list }) => {
                 <Box
                   className={start ? "small" : ""}
                   sx={{
-                    aspectRatio: "1",
                     position: "absolute",
-
+                    paddingBottom: "10000%",
                     width: "10000%",
+
                     zIndex: 2,
                     borderRadius: "50%",
                     top: "50%",

@@ -14,7 +14,7 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
       sx={{
         cursor: "url('/assets/cursor/GoCursor.svg'), auto",
         overflow: "hidden",
-        aspectRatio: ["auto"],
+
         backgroundColor: "white",
         position: "relative",
         zIndex: 2,
@@ -28,11 +28,7 @@ const LargeBlock = ({ forwardSx, handleActivate, active, content }) => {
         ":hover": {
           filter: "grayscale(0)",
         },
-        "@supports not (aspect-ratio:1)": {
-          height: [0, "auto"],
 
-          pb: "100%",
-        },
         ...forwardSx,
       }}
     >
@@ -55,7 +51,7 @@ const Unactivated = ({ mainImage, content, handleActivate }) => {
     <Container
       onClick={handleActivate}
       variant="container.largeBlock"
-      sx={{ height: "100%" }}
+      sx={{ height: "100%", width: "100%", position: "absolute" }}
     >
       <motion.div
         sx={{
@@ -94,7 +90,6 @@ const Unactivated = ({ mainImage, content, handleActivate }) => {
           height: "40px",
           minWidth: "100%",
           transition: "1s ease",
-          background: "red",
         }}
       ></Box>
 
@@ -163,9 +158,9 @@ const Activated = ({ content, close }) => {
   return (
     <Box
       sx={{
-        minHeight: "100%",
+        height: "100%",
         width: "100%",
-        position: "relative",
+        position: "static",
         background:
           (page < list.length && page > -1 && list[page]?.color) ?? "black",
       }}
@@ -276,6 +271,10 @@ const ClientPage = ({ content, current, mobile }) => {
           drag={false}
           forwardSx={{
             height: "100%",
+            width: "100%",
+            span: {
+              position: "static !important",
+            },
           }}
         />
       )}
