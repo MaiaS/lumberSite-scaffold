@@ -68,21 +68,9 @@ const CarouselFeature = ({ title, description, list }) => {
               <Flex sx={{ alignItems: "center" }}>
                 <Box
                   sx={{
-
-                    position: "absolute",
-                    paddingBottom: "10000%",
-                    width: "10000%",
-
-                    zIndex: 2,
-                    borderRadius: "50%",
-                    top: "50%",
-                    left: "50%",
-                    transform: "scale(1) translate(-50%, -50%)",
-                    transformOrigin: "center",
-
                     background: "brand",
-                    height: ["37px", "50px"],
-                    width: ["37px", "50px"],
+                    height: "50px",
+                    width: "50px",
                     display: "inline-block",
                     borderRadius: "50%",
                     mx: "10px",
@@ -93,10 +81,10 @@ const CarouselFeature = ({ title, description, list }) => {
                   <Box
                     className={start ? "small" : ""}
                     sx={{
-                      aspectRatio: "1",
                       position: "absolute",
-
+                      paddingBottom: "10000%",
                       width: "10000%",
+
                       zIndex: 2,
                       borderRadius: "50%",
                       top: "50%",
@@ -106,7 +94,7 @@ const CarouselFeature = ({ title, description, list }) => {
                       background: "brand",
                       transition: "1s ease",
                     }}
-                  ></Box>
+                  />
                 </Box>
                 <Text color="white">Lumber</Text>
               </Flex>
@@ -232,13 +220,6 @@ const VideoSlice = ({ item, index, length, currentRotation }) => {
     vid.currentTime = 1;
     return vid;
   });
-
-  // useEffect(() => {
-  //   console.log(video);
-  //   if (!video) {
-  //     alert("no Video!");
-  //   }
-  // }, [video]);
 
   // scale the index by its length between min 0 and max 2 to get the offset for next slice
   const Startpoint = 2 / length;
