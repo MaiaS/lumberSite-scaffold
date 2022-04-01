@@ -195,7 +195,6 @@ const Seconds = ({ mainColor }) => {
         viewBox="50 50 100 100"
         style={{
           position: "absolute",
-          position: "absolute",
           zIndex: 1,
           top: "50%",
           left: "50%",
