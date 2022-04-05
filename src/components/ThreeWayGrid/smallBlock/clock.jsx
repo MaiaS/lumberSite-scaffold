@@ -4,7 +4,7 @@ import { useState, memo, useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import { linearScale } from "~/utils/linearScale";
 
-const Clock = memo(function MemoClock({ content }) {
+const Clock = memo(function MemoClock({ content, pause }) {
   const _date = new Date();
 
   const [date, setDate] = useState(null);
@@ -64,22 +64,30 @@ const Clock = memo(function MemoClock({ content }) {
       sx={{
         ".hours": {
           animation: `86400s linear  infinite ${hourAnim}`,
+          animationPlayState: pause && "paused",
           animationDelay: ".5s",
           transform: `translate(-50%, -50%) rotate(${
-            linearScale(hours % 12, 0, 12, 0, 360) + 45
+            linearScale(
+              (hours + minutes / 60 + seconds / 3600) % 12,
+              0,
+              12,
+              0,
+              360
+            ) + 45
           }deg)`,
         },
         ".minutes": {
           animation: ` 3600s linear  infinite ${minuteAnim}`,
+          animationPlayState: pause && "paused",
           animationDelay: ".5s",
           transform: `translate(-50%, -50%) rotate(${
-            linearScale(minutes, 0, 60, 0, 360) + 45
+            linearScale(minutes + seconds / 60, 0, 60, 0, 360) + 45
           }deg)`,
         },
         ".seconds": {
           animation: `60s linear infinite ${secondAnim}`,
+          animationPlayState: pause && "paused",
           animationDelay: ".5s",
-
           transform: `translate(-50%, -50%) rotate(${
             linearScale(30, 0, 60, 0, 360) + 45
           }deg)`,

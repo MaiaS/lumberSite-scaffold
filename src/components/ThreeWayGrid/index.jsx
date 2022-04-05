@@ -15,7 +15,6 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
           flexDirection: !position && "row-reverse",
           gridAutoRows: "",
           backgroundColor: "black",
-
           position: "relative",
           width: "100%",
           gridGap: "1px",
@@ -44,7 +43,7 @@ const ThreeWayGrid = ({ large, position, smallCollection }) => {
         <LargeBlock
           forwardSx={{
             width: active ? "100%" : "65%",
-            pb: active ? "70%" : 0,
+            pb: active ? "70%" : "69%",
           }}
           active={active}
           handleActivate={() => setActive(!active)}
